@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Smart Finance</string>
+    <string name="title_activity_login">Iniciar sesión</string>
+    <string name="title_activity_register">Registrarse</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar sesión</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">Este email es incorrecto</string>
+    <string name="error_invalid_password">La contraseña es muy corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">El campo es requerido</string>
+    <string name="permission_rationale">"Se requieren permisos de contactos para completar el email."
+    </string>
+    <string name="register_button">Regístrate</string>
+    <string name="login_button">Iniciar sesión</string>
+
+    <string name="start">COMIENZA</string>
+    <string name="start_title">Bienvenido a Smart Finance!</string>
+    <string name="start_desc">La manera más fácil de ayudar al microempresario</string>
+    <string name="prompt_name">Nombre</string>
+    <string name="prompt_lastname">Apellido</string>
+    <string name="action_register">Registrarse</string>
+    <string name="condition_checkbox">Acepto las condiciones de servicio y la política de privacidad.</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_sign_up">No tienes una cuenta? Regístrate</string>
+</resources>
