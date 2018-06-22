@@ -22,6 +22,17 @@
     <string name="prompt_lastname">Apellido</string>
     <string name="action_register">Registrarse</string>
     <string name="condition_checkbox">Acepto las condiciones de servicio y la política de privacidad.</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Smart Finance</string>
     <string name="action_sign_up">No tienes una cuenta? Regístrate</string>
+    <string name="title_expenses">Gastos</string>
+    <string name="title_incomes">Ingresos</string>
+    <string name="title_budget">Presupuesto</string>
+    <string name="title_activity_business">Selecciona tu negocio</string>
+
+    <string name="name_business_1">Albañilería y Construcción</string>
+    <string name="name_business_2">Restaurante</string>
+    <string name="name_business_3">Cerrajería</string>
+    <string name="name_business_4">Electricidad</string>
+    <string name="name_business_5">Pintura</string>
+    <string name="name_business_6">Gasfitería</string>
 </resources>

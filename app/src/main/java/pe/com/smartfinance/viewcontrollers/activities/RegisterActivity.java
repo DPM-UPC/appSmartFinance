@@ -16,10 +16,10 @@ import pe.com.smartfinance.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText nameView;
-    private EditText lastNameView;
-    private EditText emailView;
-    private EditText passwordView;
+    private EditText nameEditText;
+    private EditText lastnameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
     private Button registerButton;
     private View progressView;
     private View registerFormView;
@@ -29,12 +29,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nameView = (EditText) findViewById(R.id.name_register_form);
-        lastNameView = (EditText) findViewById(R.id.lastname_register_form);
-        emailView = (EditText) findViewById(R.id.email_register_form);
-        passwordView = (EditText) findViewById(R.id.password_register_form);
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        lastnameEditText = (EditText) findViewById(R.id.lastnameEditText);
+        emailEditText = (EditText) findViewById(R.id.emailEditText);
+        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
-        registerButton = (Button) findViewById(R.id.register_button);
+        registerButton = (Button) findViewById(R.id.registerButton);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,47 +43,47 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        registerFormView = findViewById(R.id.register_form);
-        progressView = findViewById(R.id.register_progress);
+        registerFormView = findViewById(R.id.registerFormScrollView);
+        progressView = findViewById(R.id.registerProgressBar);
     }
 
     private void attemptRegister(){
-        nameView.setError(null);
-        lastNameView.setError(null);
-        emailView.setError(null);
-        passwordView.setError(null);
+        nameEditText.setError(null);
+        lastnameEditText.setError(null);
+        emailEditText.setError(null);
+        passwordEditText.setError(null);
 
-        String name = nameView.getText().toString();
-        String lastName = lastNameView.getText().toString();
-        String email = emailView.getText().toString();
-        String password = passwordView.getText().toString();
+        String name = nameEditText.getText().toString();
+        String lastName = lastnameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(name)) {
-            nameView.setError(getString(R.string.error_field_required));
-            focusView = nameView;
+            nameEditText.setError(getString(R.string.error_field_required));
+            focusView = nameEditText;
             cancel = true;
         } else if (TextUtils.isEmpty(lastName)) {
-            lastNameView.setError(getString(R.string.error_field_required));
-            focusView = lastNameView;
+            lastnameEditText.setError(getString(R.string.error_field_required));
+            focusView = lastnameEditText;
             cancel = true;
         } else if (TextUtils.isEmpty(email)) {
-            emailView.setError(getString(R.string.error_field_required));
-            focusView = emailView;
+            emailEditText.setError(getString(R.string.error_field_required));
+            focusView = emailEditText;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            emailView.setError(getString(R.string.error_invalid_email));
-            focusView = emailView;
+            emailEditText.setError(getString(R.string.error_invalid_email));
+            focusView = emailEditText;
             cancel = true;
         } else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordView.setError(getString(R.string.error_invalid_password));
-            focusView = passwordView;
+            passwordEditText.setError(getString(R.string.error_invalid_password));
+            focusView = passwordEditText;
             cancel = true;
         } else if(TextUtils.isEmpty(password)){
-            passwordView.setError(getString(R.string.error_field_required));
-            focusView = passwordView;
+            passwordEditText.setError(getString(R.string.error_field_required));
+            focusView = passwordEditText;
             cancel = true;
         }
 
@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+            Intent mainIntent = new Intent(RegisterActivity.this, BusinessActivity.class);
             startActivity(mainIntent);
         }
     }

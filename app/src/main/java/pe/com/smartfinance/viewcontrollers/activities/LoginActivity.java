@@ -18,19 +18,19 @@ import pe.com.smartfinance.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText emailView;
-    private EditText passwordView;
-    private View progressView;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private View loginProgressView;
     private View loginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        emailView = (EditText) findViewById(R.id.email);
-        passwordView = (EditText) findViewById(R.id.password);
+        emailEditText = (EditText) findViewById(R.id.emailEditText);
+        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
-        Button emailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button emailSignInButton = (Button) findViewById(R.id.emailSignInButton);
 
         emailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        TextView registerSignUpButton = (TextView) findViewById(R.id.register_sign_up);
+        TextView registerSignUpButton = (TextView) findViewById(R.id.registerSignUpTextView);
 
         registerSignUpButton.setOnClickListener(new OnClickListener() {
              @Override
@@ -50,37 +50,37 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        loginFormView = findViewById(R.id.loginFormScrollView);
+        loginProgressView = findViewById(R.id.loginProgressBar);
     }
 
     private void attemptLogin(){
-        emailView.setError(null);
-        passwordView.setError(null);
+        emailEditText.setError(null);
+        passwordEditText.setError(null);
 
-        String email = emailView.getText().toString();
-        String password = passwordView.getText().toString();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordView.setError(getString(R.string.error_invalid_password));
-            focusView = passwordView;
+            passwordEditText.setError(getString(R.string.error_invalid_password));
+            focusView = passwordEditText;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(email)) {
-            emailView.setError(getString(R.string.error_field_required));
-            focusView = emailView;
+            emailEditText.setError(getString(R.string.error_field_required));
+            focusView = emailEditText;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            emailView.setError(getString(R.string.error_invalid_email));
-            focusView = emailView;
+            emailEditText.setError(getString(R.string.error_invalid_email));
+            focusView = emailEditText;
             cancel = true;
         } else if(TextUtils.isEmpty(password)){
-            passwordView.setError(getString(R.string.error_field_required));
-            focusView = passwordView;
+            passwordEditText.setError(getString(R.string.error_field_required));
+            focusView = passwordEditText;
             cancel = true;
         }
 
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, BusinessActivity.class);
             startActivity(mainIntent);
         }
     }
@@ -119,18 +119,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
+            loginProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            loginProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    loginProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            loginProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }

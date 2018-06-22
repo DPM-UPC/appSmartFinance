@@ -13,7 +13,7 @@
 
     <!-- Register progress -->
     <ProgressBar
-        android:id="@+id/register_progress"
+        android:id="@+id/registerProgressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,11 +21,11 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/register_form"
+        android:id="@+id/registerFormScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/user_register_form"
+            android:id="@+id/userRegisterFormLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/name_register_form"
+                    android:id="@+id/nameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_name"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/lastname_register_form"
+                    android:id="@+id/lastnameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_lastname"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/email_register_form"
+                    android:id="@+id/emailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password_register_form"
+                    android:id="@+id/passwordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -91,14 +91,14 @@
             </android.support.design.widget.TextInputLayout>
 
             <CheckBox
-                android:id="@+id/checkbox_register_form"
+                android:id="@+id/registerCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/condition_checkbox"/>
 
             <Button
-                android:id="@+id/register_button"
+                android:id="@+id/registerButton"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

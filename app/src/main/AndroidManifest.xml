@@ -24,9 +24,16 @@
         <activity
             android:name=".viewcontrollers.activities.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".viewcontrollers.activities.MainActivity"/>
-        <activity android:name=".viewcontrollers.activities.RegisterActivity"
-            android:label="@string/title_activity_register"/>
+        <activity
+            android:name=".viewcontrollers.activities.RegisterActivity"
+            android:label="@string/title_activity_register" />
+        <activity
+            android:name=".viewcontrollers.activities.MainActivity"
+            android:label="@string/title_activity_main" />
+        <activity
+            android:name=".viewcontrollers.activities.BusinessActivity"
+            android:label="@string/title_activity_business"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
