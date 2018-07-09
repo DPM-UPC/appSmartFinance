@@ -1,35 +1,27 @@
 package pe.com.smartfinance.viewcontrollers.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.viewcontrollers.fragments.expenses.ExpensesFragment;
+import pe.com.smartfinance.viewcontrollers.fragments.incomes.IncomesFragment;
+import pe.com.smartfinance.viewcontrollers.fragments.summary.SummaryFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_expenses:
-                    mTextMessage.setText(R.string.title_expenses);
-                    return true;
-                case R.id.navigation_incomes:
-                    mTextMessage.setText(R.string.title_incomes);
-                    return true;
-                case R.id.navigation_budget:
-                    mTextMessage.setText(R.string.title_budget);
-                    return true;
-            }
-            return false;
+            return navigateTo(item);
         }
     };
 
@@ -38,9 +30,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        Intent intent = getIntent();
+        String titleBusiness = intent.getStringExtra("titleBusiness");
+        setTitle(titleBusiness);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigateTo(navigation.getMenu().findItem(R.id.navigation_expenses));
+    }
+
+    private Fragment getFragmentFor(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_expenses:
+                return new ExpensesFragment();
+            case R.id.navigation_incomes:
+                return new IncomesFragment();
+            case R.id.navigation_summary:
+                return new SummaryFragment();
+        }
+        return null;
+    }
+
+    private boolean navigateTo(MenuItem item) {
+        item.setChecked(true);
+        return getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, getFragmentFor(item))
+                .commit() > 0;
+
     }
 
 }

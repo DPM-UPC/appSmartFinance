@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_expenses"
-        android:icon="@drawable/ic_remove_black_24dp"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
         android:title="@string/title_expenses" />
 
     <item
         android:id="@+id/navigation_incomes"
-        android:icon="@drawable/ic_add_black_24dp"
+        android:icon="@drawable/ic_arrow_downward_black_24dp"
         android:title="@string/title_incomes" />
 
     <item
-        android:id="@+id/navigation_budget"
-        android:icon="@drawable/ic_account_balance_wallet_black_24dp"
-        android:title="@string/title_budget" />
+        android:id="@+id/navigation_summary"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="@string/title_summary" />
 
 </menu>

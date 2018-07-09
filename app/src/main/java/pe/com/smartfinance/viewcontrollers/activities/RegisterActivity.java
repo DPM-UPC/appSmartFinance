@@ -16,13 +16,13 @@ import pe.com.smartfinance.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText nameEditText;
-    private EditText lastnameEditText;
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private Button registerButton;
-    private View progressView;
-    private View registerFormView;
+    EditText nameEditText;
+    EditText lastnameEditText;
+    EditText emailEditText;
+    EditText passwordEditText;
+    Button registerButton;
+    View progressView;
+    View registerFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

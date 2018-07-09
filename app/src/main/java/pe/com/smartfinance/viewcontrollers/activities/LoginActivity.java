@@ -18,10 +18,10 @@ import pe.com.smartfinance.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private View loginProgressView;
-    private View loginFormView;
+    EditText emailEditText;
+    EditText passwordEditText;
+    View loginProgressView;
+    View loginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

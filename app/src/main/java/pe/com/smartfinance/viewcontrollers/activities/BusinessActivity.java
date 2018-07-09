@@ -1,20 +1,17 @@
 package pe.com.smartfinance.viewcontrollers.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import java.util.List;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Business;
-import pe.com.smartfinance.models.BusinessAdapter;
-import pe.com.smartfinance.models.BusinessGroup;
+import pe.com.smartfinance.viewcontrollers.adapters.BusinessAdapter;
+import pe.com.smartfinance.models.BusinessCollection;
 
 public class BusinessActivity extends AppCompatActivity {
     List<Business> business;
@@ -29,9 +26,9 @@ public class BusinessActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BusinessGroup businessGroup = new BusinessGroup(this);
-        business = businessGroup.getBusiness();
-        businessLayoutManager = new LinearLayoutManager(this);
+        BusinessCollection businessCollection = new BusinessCollection(this);
+        business = businessCollection.getBusiness();
+        businessLayoutManager = new GridLayoutManager(this, 2);
         businessAdapter = new BusinessAdapter();
         businessAdapter.setBusiness(business);
         businessRecyclerView = (RecyclerView) findViewById(R.id.businessRecyclerView);

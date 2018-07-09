@@ -17,7 +17,7 @@
 
     <string name="start">COMIENZA</string>
     <string name="start_title">Bienvenido a Smart Finance!</string>
-    <string name="start_desc">La manera más fácil de ayudar al microempresario</string>
+    <string name="start_slogan">La manera más fácil de ayudar al microempresario</string>
     <string name="prompt_name">Nombre</string>
     <string name="prompt_lastname">Apellido</string>
     <string name="action_register">Registrarse</string>
@@ -26,8 +26,10 @@
     <string name="action_sign_up">No tienes una cuenta? Regístrate</string>
     <string name="title_expenses">Gastos</string>
     <string name="title_incomes">Ingresos</string>
-    <string name="title_budget">Presupuesto</string>
+    <string name="title_summary">Resumen</string>
     <string name="title_activity_business">Selecciona tu negocio</string>
+    <string name="title_activity_add_expenses">Agregar gasto</string>
+    <string name="title_activity_add_incomes">Agregar ingreso</string>
 
     <string name="name_business_1">Albañilería y Construcción</string>
     <string name="name_business_2">Restaurante</string>
@@ -35,4 +37,11 @@
     <string name="name_business_4">Electricidad</string>
     <string name="name_business_5">Pintura</string>
     <string name="name_business_6">Gasfitería</string>
+
+
+    <string name="add">Agregar</string>
+    <string name="default_text_expenses">Aquí no hay gastos. Favor de registrarlos para que tengas un mejor control financiero de tu negocio</string>
+    <string name="default_text_incomes">Aquí no hay ingresos. Favor de registrarlos para que tengas un mejor control financiero de tu negocio</string>
+
+
 </resources>
