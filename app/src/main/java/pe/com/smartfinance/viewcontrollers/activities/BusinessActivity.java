@@ -10,6 +10,7 @@ import java.util.List;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Business;
+import pe.com.smartfinance.utilitarian.SessionManagement;
 import pe.com.smartfinance.viewcontrollers.adapters.BusinessAdapter;
 import pe.com.smartfinance.models.BusinessCollection;
 
@@ -18,13 +19,15 @@ public class BusinessActivity extends AppCompatActivity {
     RecyclerView.LayoutManager businessLayoutManager;
     RecyclerView businessRecyclerView;
     BusinessAdapter businessAdapter;
+    //SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+      //  sessionManagement = new SessionManagement(getApplicationContext());
+      //  sessionManagement.checkLogin();
 
         BusinessCollection businessCollection = new BusinessCollection(this);
         business = businessCollection.getBusiness();
@@ -34,7 +37,6 @@ public class BusinessActivity extends AppCompatActivity {
         businessRecyclerView = (RecyclerView) findViewById(R.id.businessRecyclerView);
         businessRecyclerView.setLayoutManager(businessLayoutManager);
         businessRecyclerView.setAdapter(businessAdapter);
-
     }
 
 }

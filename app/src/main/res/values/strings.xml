@@ -43,5 +43,24 @@
     <string name="default_text_expenses">Aquí no hay gastos. Favor de registrarlos para que tengas un mejor control financiero de tu negocio</string>
     <string name="default_text_incomes">Aquí no hay ingresos. Favor de registrarlos para que tengas un mejor control financiero de tu negocio</string>
 
+    <string-array name="months">
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+        <item>Mayo</item>
+        <item>Junio</item>
+        <item>Julio</item>
+        <item>Agosto</item>
+        <item>Setiembre</item>
+        <item>Octubre</item>
+        <item>Noviembre</item>
+        <item>Deciembre</item>
+    </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_fragment_summary">Resumen financiero</string>
+    <string name="total_incomes">Total Ingresos</string>
+    <string name="total_expenses">Total Gastos</string>
+    <string name="utility">Utilidad</string>
 
 </resources>

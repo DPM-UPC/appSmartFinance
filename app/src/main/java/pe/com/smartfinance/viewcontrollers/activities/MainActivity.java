@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.viewcontrollers.fragments.expenses.ExpensesFragment;
@@ -29,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Intent intent = getIntent();
-        String titleBusiness = intent.getStringExtra("titleBusiness");
-        setTitle(titleBusiness);
+        if(intent.getExtras() != null) {
+            setTitle(intent.getExtras().getString("titleBusiness"));
+        }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

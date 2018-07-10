@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.utilitarian.SessionManagement;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,11 +25,14 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerButton;
     View progressView;
     View registerFormView;
+   // SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //sessionManagement = new SessionManagement(getApplicationContext());
 
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         lastnameEditText = (EditText) findViewById(R.id.lastnameEditText);
@@ -42,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
+
+      //  Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_LONG).show();
 
         registerFormView = findViewById(R.id.registerFormScrollView);
         progressView = findViewById(R.id.registerProgressBar);
@@ -91,8 +98,13 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Intent mainIntent = new Intent(RegisterActivity.this, BusinessActivity.class);
-            startActivity(mainIntent);
+
+            //String fullName = name + lastName;
+            //sessionManagement.createLogginSession(fullName, email, password);
+
+            Intent businessIntent = new Intent(RegisterActivity.this, BusinessActivity.class);
+            startActivity(businessIntent);
+            finish();
         }
     }
 

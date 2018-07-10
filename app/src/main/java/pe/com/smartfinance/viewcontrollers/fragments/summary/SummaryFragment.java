@@ -1,12 +1,17 @@
 package pe.com.smartfinance.viewcontrollers.fragments.summary;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
@@ -20,7 +25,10 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import pe.com.smartfinance.R;
 
@@ -28,6 +36,8 @@ import pe.com.smartfinance.R;
  * A simple {@link Fragment} subclass.
  */
 public class SummaryFragment extends Fragment {
+
+    Spinner monthSpinner;
 
     BarChart barChart;
     String[] months = new String[]{"Mayo", "Junio", "Julio"};
@@ -45,9 +55,85 @@ public class SummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
 
+        monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+                        R.array.months, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(adapter);
+        monthSpinner.setSelection(setCurrentMonthSpinner());
+        monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         barChart = (BarChart) view.findViewById(R.id.barChart);
         createChart();
         return view;
+    }
+
+    public int setCurrentMonthSpinner() {
+        String[] months = getResources().getStringArray(R.array.months);
+        for (int i = 0; i < months.length; i++){
+            String month = getCurrentMonth();
+
+            switch (month){
+                case "January":
+                    month = "Enero";
+                    break;
+                case "February":
+                    month = "Febrero";
+                    break;
+                case "March":
+                    month = "Marzo";
+                    break;
+                case "April":
+                    month = "Abril";
+                    break;
+                case "May":
+                    month = "Mayo";
+                    break;
+                case "June":
+                    month = "Junio";
+                    break;
+                case "July":
+                    month = "Julio";
+                    break;
+                case "August":
+                    month = "Agosto";
+                    break;
+                case "September":
+                    month = "Septiembre";
+                    break;
+                case "October":
+                    month = "Octubre";
+                    break;
+                case "November":
+                    month = "Noviembre";
+                    break;
+                case "December":
+                    month = "Diciembre";
+                    break;
+            }
+
+            if (months[i].equals(month)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public String getCurrentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat month = new SimpleDateFormat("MMMM");
+        return month.format(calendar.getTime());
     }
 
     private Chart getSameChart(Chart chart, String description, int textColor, int background, int animateY){

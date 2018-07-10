@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +16,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,27 +28,28 @@
             android:label="@string/title_activity_register">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".viewcontrollers.activities.LoginActivity"/>
+                android:value=".viewcontrollers.activities.LoginActivity" />
         </activity>
         <activity
             android:name=".viewcontrollers.activities.MainActivity" />
         <activity
             android:name=".viewcontrollers.activities.BusinessActivity"
-            android:label="@string/title_activity_business"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_business" />
         <activity
             android:name=".viewcontrollers.activities.AddExpensesActivity"
-            android:label="@string/title_activity_add_expenses">
-           <!-- <meta-data
+            android:label="@string/title_activity_add_expenses"
+            android:parentActivityName=".viewcontrollers.activities.MainActivity">
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".viewcontrollers.activities.MainActivity"/>-->
+                android:value=".viewcontrollers.activities.MainActivity" />
         </activity>
-
-        <activity android:name=".viewcontrollers.activities.AddIncomesActivity"
-            android:label="@string/title_activity_add_incomes">
-           <!-- <meta-data
+        <activity
+            android:name=".viewcontrollers.activities.AddIncomesActivity"
+            android:label="@string/title_activity_add_incomes"
+            android:parentActivityName=".viewcontrollers.activities.MainActivity">
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".viewcontrollers.activities.MainActivity"/> -->
+                android:value=".viewcontrollers.activities.MainActivity" />
         </activity>
     </application>
 

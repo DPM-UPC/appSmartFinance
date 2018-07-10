@@ -8,13 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.utilitarian.SessionManagement;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,11 +27,15 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordEditText;
     View loginProgressView;
     View loginFormView;
+   // SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //sessionManagement = new SessionManagement(getApplicationContext());
+
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
@@ -83,13 +92,13 @@ public class LoginActivity extends AppCompatActivity {
             focusView = passwordEditText;
             cancel = true;
         }
-
         if (cancel) {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Intent mainIntent = new Intent(LoginActivity.this, BusinessActivity.class);
-            startActivity(mainIntent);
+            Intent businessIntent = new Intent(LoginActivity.this, BusinessActivity.class);
+            startActivity(businessIntent);
+            finish();
         }
     }
 

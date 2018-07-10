@@ -26,8 +26,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.ViewHo
 
     @Override
     public BusinessAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.card_business, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_business, parent, false));
     }
     @Override
     public void onBindViewHolder(final BusinessAdapter.ViewHolder holder, final int position) {
