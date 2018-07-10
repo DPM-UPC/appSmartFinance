@@ -14,12 +14,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
 import pe.com.smartfinance.R;
-import pe.com.smartfinance.utilitarian.SessionManagement;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,14 +25,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordEditText;
     View loginProgressView;
     View loginFormView;
-   // SessionManagement sessionManagement;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        //sessionManagement = new SessionManagement(getApplicationContext());
 
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
