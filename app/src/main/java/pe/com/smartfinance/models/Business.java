@@ -1,12 +1,14 @@
 package pe.com.smartfinance.models;
 
+import android.os.Bundle;
+
 public class Business {
     private String name;
-    private int pictureid;
+    private int pictureId;
 
-    public Business(String name, int pictureid){
+    public Business(String name, int pictureId){
         this.name = name;
-        this.pictureid = pictureid;
+        this.pictureId = pictureId;
     }
 
     public String getName() {
@@ -17,11 +19,18 @@ public class Business {
         this.name = name;
     }
 
-    public int getPictureid() {
-        return pictureid;
+    public int getPictureId() {
+        return pictureId;
     }
 
-    public void setPictureid(int pictureid) {
-        this.pictureid = pictureid;
+    public void setPictureId(int pictureId) {
+        this.pictureId = pictureId;
+    }
+
+    public Bundle toBundle(){
+        Bundle bundle = new Bundle();
+        bundle.putString("name", this.getName());
+        bundle.putInt("pictureId", this.getPictureId());
+        return bundle;
     }
 }

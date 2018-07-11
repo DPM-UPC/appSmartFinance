@@ -31,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
-        if(intent.getExtras() != null) {
-            setTitle(intent.getExtras().getString("titleBusiness"));
+        if (intent == null) return;
+
+        if (intent.getExtras() != null) {
+            setTitle(intent.getExtras().getString("name"));
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
