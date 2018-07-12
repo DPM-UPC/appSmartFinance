@@ -44,6 +44,9 @@ public class AddIncomesActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 final String selected = (String) listAdapter.getChild(groupPosition,  childPosition);
+
+                String groupTitle = (String) expandableListView.getItemAtPosition(groupPosition);
+
                 if (selected.equals("Fecha")){
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
@@ -58,7 +61,11 @@ public class AddIncomesActivity extends AppCompatActivity {
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
+                } else {
+                    expandableListView.collapseGroup(groupPosition);
+                    expandableListView.expandGroup(groupPosition + 1);
                 }
+
                 return false;
             }
         });

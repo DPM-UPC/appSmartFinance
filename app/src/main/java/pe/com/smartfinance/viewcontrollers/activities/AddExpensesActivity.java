@@ -1,6 +1,7 @@
 package pe.com.smartfinance.viewcontrollers.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +10,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -32,6 +38,7 @@ public class AddExpensesActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     EditText expensesAmountEditText;
     DatePickerDialog.OnDateSetListener dateSetListener;
+    Button addExpensesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,9 @@ public class AddExpensesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_expenses);
 
         expensesAmountEditText = (EditText) findViewById(R.id.expensesAmountEditText);
+
+        String amount = expensesAmountEditText.getText().toString();
+
         expandableListView = (ExpandableListView) findViewById(R.id.expensesExpandibleListView);
         prepareListData();
         listAdapter = new ExpensesExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -48,7 +58,11 @@ public class AddExpensesActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
                 final String selected = (String) listAdapter.getChild(groupPosition,  childPosition);
+
+                String groupTitle = (String) expandableListView.getItemAtPosition(groupPosition);
+
                 if (selected.equals("Fecha")){
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
@@ -63,7 +77,11 @@ public class AddExpensesActivity extends AppCompatActivity {
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog.show();
 
+                } else {
+                    expandableListView.collapseGroup(groupPosition);
+                    expandableListView.expandGroup(groupPosition + 1);
                 }
+
                 return false;
             }
         });
@@ -75,6 +93,14 @@ public class AddExpensesActivity extends AppCompatActivity {
                 String date = month + "/" + dayOfMonth + "/" + year;
             }
         };
+
+        addExpensesButton = (Button) findViewById(R.id.addExpensesButton);
+        addExpensesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void prepareListData() {
