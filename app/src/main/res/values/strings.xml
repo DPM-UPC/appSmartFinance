@@ -57,7 +57,15 @@
         <item>Noviembre</item>
         <item>Deciembre</item>
     </string-array>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string-array name="business">
+        <item>Albañileria y Construcción</item>
+        <item>Restaurante</item>
+        <item>Cerrajería</item>
+        <item>Electricidad</item>
+        <item>Pintura</item>
+        <item>Gasfitería</item>
+    </string-array>
+
     <string name="title_fragment_summary">Resumen financiero</string>
     <string name="total_incomes">Total Ingresos</string>
     <string name="total_expenses">Total Gastos</string>

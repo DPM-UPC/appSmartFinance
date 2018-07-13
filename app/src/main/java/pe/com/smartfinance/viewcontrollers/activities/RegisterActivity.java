@@ -10,8 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -42,21 +46,39 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerButton;
     View progressView;
     View registerFormView;
-    SessionManager session;
+    Spinner businessSpinner;
+	SessionManager session;
+	Integer businessId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         lastnameEditText = (EditText) findViewById(R.id.lastnameEditText);
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
-
+        businessSpinner = (Spinner) findViewById(R.id.businessSpinner);
         registerButton = (Button) findViewById(R.id.registerButton);
 
         session = new SessionManager(getApplicationContext());
+
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),
+                R.array.business, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        businessSpinner.setAdapter(adapter);
+        businessSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                businessId = (int) adapter.getItemId(position);
+                setBusinessId(businessId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +89,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerFormView = findViewById(R.id.registerFormScrollView);
         progressView = findViewById(R.id.registerProgressBar);
+    }
+
+
+    public void setBusinessId(Integer businessId){
+        this.businessId = businessId;
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
     }
 
     private void attemptRegister(){
@@ -114,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             try {
                 // TODO: cambiar el 1 por el valor elegido en el combo
-                registerUser(email, password, 1);
+                registerUser(email, password, getBusinessId());
             } catch (Exception e) {
                 e.printStackTrace();
             }

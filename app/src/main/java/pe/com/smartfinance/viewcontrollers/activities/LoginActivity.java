@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -22,6 +22,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
+import java.util.HashMap;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.authModels.AccessToken;
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
@@ -67,11 +69,11 @@ public class LoginActivity extends AppCompatActivity {
         TextView registerSignUpButton = (TextView) findViewById(R.id.registerSignUpTextView);
 
         registerSignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(registerIntent);
-            }
+             @Override
+             public void onClick(View v) {
+                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                 startActivity(registerIntent);
+             }
         });
 
 
@@ -104,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             emailEditText.setError(getString(R.string.error_invalid_email));
             focusView = emailEditText;
             cancel = true;
-        } else if (TextUtils.isEmpty(password)) {
+        } else if(TextUtils.isEmpty(password)){
             passwordEditText.setError(getString(R.string.error_field_required));
             focusView = passwordEditText;
             cancel = true;
