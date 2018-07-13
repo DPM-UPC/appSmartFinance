@@ -14,15 +14,16 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
-import java.util.HashMap;
+
+import java.io.IOException;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.authModels.AccessToken;
@@ -130,20 +131,25 @@ public class LoginActivity extends AppCompatActivity {
         User userRequest = new User();
         userRequest.setEmail(email);
         userRequest.setUserPassword(password);
-        ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
         AndroidNetworking.post(AuthApi.getAccessTokensUrl())
                 .addJSONObjectBody(new JSONObject(mapper.writeValueAsString(userRequest)))
                 .setPriority(Priority.HIGH)
                 .setTag("SmartFinance")
                 .setContentType("application/json; charset=utf-8")
                 .build()
-                .getAsObject(AccessToken.class, new ParsedRequestListener<AccessToken>() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(AccessToken response) {
+                    public void onResponse(JSONObject response) {
                         Log.d("SmartFinance", "logeo exitoso, se obtiene token. " + String.valueOf(response));
-                        AccessToken accessToken = new AccessToken();
-                        accessToken.setToken(response.getToken());
-                        accessToken.setExpiration(response.getExpiration());
+                        AccessToken accessToken = null;
+                        try {
+                            accessToken = mapper.readValue(response.toString(), AccessToken.class);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        accessToken.setToken(accessToken.getToken());
+                        accessToken.setExpiration(accessToken.getExpiration());
 
                         if (accessToken != null && accessToken.getToken() != null && !accessToken.getToken().isEmpty()) {
                             Log.d("SmartFinance", "logeo con exito");

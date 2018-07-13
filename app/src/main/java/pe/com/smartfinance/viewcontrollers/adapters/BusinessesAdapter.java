@@ -34,6 +34,7 @@ public class BusinessesAdapter extends RecyclerView.Adapter<BusinessesAdapter.Vi
     public void onBindViewHolder(@NonNull BusinessesAdapter.ViewHolder holder, final int position) {
         Business business = businesses.get(position);
         holder.updateViewFrom(business);
+
     }
     @Override
     public int getItemCount() {
@@ -60,6 +61,7 @@ public class BusinessesAdapter extends RecyclerView.Adapter<BusinessesAdapter.Vi
             businessCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Context context = v.getContext();
                     Intent mainIntent = new Intent(context, MainActivity.class);
                     mainIntent.putExtras(business.toBundle());

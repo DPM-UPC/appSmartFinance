@@ -1,11 +1,13 @@
 package pe.com.smartfinance.viewcontrollers.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,11 +30,11 @@ public class AddIncomesActivity extends AppCompatActivity {
     EditText incomesAmountEditText;
     DatePickerDialog.OnDateSetListener dateSetListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_incomes);
-
         incomesAmountEditText = (EditText) findViewById(R.id.incomesAmountEditText);
         expandableListView = (ExpandableListView) findViewById(R.id.incomesExpandibleListView);
         prepareListData();
@@ -109,5 +111,26 @@ public class AddIncomesActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(0), categories); // Header, Child data
         listDataChild.put(listDataHeader.get(1), tags);
         listDataChild.put(listDataHeader.get(2), dates);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AddIncomesActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(AddIncomesActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+        return true;
     }
 }

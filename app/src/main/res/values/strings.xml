@@ -14,7 +14,7 @@
     </string>
     <string name="register_button">Regístrate</string>
     <string name="login_button">Iniciar sesión</string>
-
+    <string name="action_settings">Logout</string>
     <string name="start">COMIENZA</string>
     <string name="start_title">Bienvenido a Smart Finance!</string>
     <string name="start_slogan">La manera más fácil de ayudar al microempresario</string>

@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -70,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         businessSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                businessId = (int) adapter.getItemId(position);
+                businessId = (int) adapter.getItemId(position + 1);
                 setBusinessId(businessId);
             }
 

@@ -1,7 +1,7 @@
 package pe.com.smartfinance.network;
 
 public class AuthApi {
-    private static String BASE_URL = "http://192.168.1.43:8081";
+    private static String BASE_URL = "http://test-server1.jl.serv.net.mx/RsAuth";
 
     public static String getUserUrl() {
         return BASE_URL + "/users";

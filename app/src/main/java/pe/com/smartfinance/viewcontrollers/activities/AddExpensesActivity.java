@@ -4,28 +4,20 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.viewcontrollers.adapters.ExpensesExpandableListAdapter;
@@ -40,11 +32,11 @@ public class AddExpensesActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener dateSetListener;
     Button addExpensesButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expenses);
-
         expensesAmountEditText = (EditText) findViewById(R.id.expensesAmountEditText);
 
         String amount = expensesAmountEditText.getText().toString();
@@ -137,4 +129,24 @@ public class AddExpensesActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(2), dates);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AddExpensesActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(AddExpensesActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+        return true;
+    }
 }
