@@ -62,5 +62,6 @@
     <string name="total_incomes">Total Ingresos</string>
     <string name="total_expenses">Total Gastos</string>
     <string name="utility">Utilidad</string>
+    <string name="login_error">Usuario y/o contraseña incorrectos</string>
 
 </resources>

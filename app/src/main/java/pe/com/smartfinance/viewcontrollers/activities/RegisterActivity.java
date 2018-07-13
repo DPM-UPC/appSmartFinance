@@ -8,11 +8,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.authModels.AccessSecurity;
+import pe.com.smartfinance.models.authModels.Country;
+import pe.com.smartfinance.models.authModels.SessionManager;
+import pe.com.smartfinance.models.authModels.User;
+import pe.com.smartfinance.models.authModels.UserBusiness;
+import pe.com.smartfinance.network.AuthApi;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerButton;
     View progressView;
     View registerFormView;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
         registerButton = (Button) findViewById(R.id.registerButton);
+
+        session = new SessionManager(getApplicationContext());
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +112,69 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-
-            Intent businessIntent = new Intent(RegisterActivity.this, BusinessActivity.class);
-            startActivity(businessIntent);
-            finish();
+            try {
+                // TODO: cambiar el 1 por el valor elegido en el combo
+                registerUser(email, password, 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void registerUser(String email, String password, Integer businessId) throws Exception {
+        Log.d("SmartFinance", "preparando para registrar");
+        User userRequest = new User();
+        userRequest.setEmail(email);
+        userRequest.setUserPassword(password);
+        List<AccessSecurity> accessSecurities = new ArrayList<>();
+        accessSecurities.add(new AccessSecurity(password));
+        List<UserBusiness> userBusinesses = new ArrayList<>();
+        userBusinesses.add(new UserBusiness(businessId));
+        userRequest.setUserBusinesses(userBusinesses);
+        userRequest.setAccessSecurities(accessSecurities);
+        userRequest.setCountry(new Country(6));
+
+        final ObjectMapper mapper = new ObjectMapper();
+        AndroidNetworking.post(AuthApi.getUserUrl())
+                .addJSONObjectBody(new JSONObject(mapper.writeValueAsString(userRequest)))
+                .setPriority(Priority.HIGH)
+                .setTag("SmartFinance")
+                .setContentType("application/json; charset=utf-8")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("SmartFinance", "registro exitoso, se obtiene datos de usuario. " + String.valueOf(response));
+                        User userReponse = null;
+                        try {
+                            userReponse = mapper.readValue(response.toString(), User.class);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (userReponse != null && userReponse.getUserId() != null && userReponse.getToken() != null && !userReponse.getToken().isEmpty()) {
+                            Log.d("SmartFinance", "registro con exito");
+                            session.createLoginSession(userReponse.getToken(), userReponse.getUserId());
+
+                            showProgress(true);
+                            Intent businessIntent = new Intent(RegisterActivity.this, BusinessActivity.class);
+                            startActivity(businessIntent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (error.getErrorCode() != 0) {
+                            Log.d("SmartFinance", "onError errorCode : " + error.getErrorCode());
+                            Log.d("SmartFinance", "onError errorBody : " + error.getErrorBody());
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        } else {
+                            // error.getErrorDetail() : connectionError, parseError, requestCancelledError
+                            Log.e("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        }
+                        Log.e("SmartFinance", "Error de registro, errorCode: " + error.getErrorCode());
+                    }
+                });
     }
 
     private boolean isEmailValid(String email) {

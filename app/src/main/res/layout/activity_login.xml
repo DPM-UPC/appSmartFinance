@@ -42,6 +42,7 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:text="paolo@gmail.com"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -60,9 +61,20 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:text="admin2"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/errorLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/login_error"
+                android:textColor="@color/dot_dark_screen1"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/emailSignInButton"

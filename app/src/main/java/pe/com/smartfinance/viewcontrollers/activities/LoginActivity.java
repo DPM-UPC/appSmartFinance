@@ -15,9 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.HashMap;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.authModels.AccessToken;
+import pe.com.smartfinance.models.authModels.SessionManager;
+import pe.com.smartfinance.models.authModels.User;
+import pe.com.smartfinance.network.AuthApi;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordEditText;
     View loginProgressView;
     View loginFormView;
-
+    TextView errorLoginTextView;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +45,17 @@ public class LoginActivity extends AppCompatActivity {
 
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        errorLoginTextView = findViewById(R.id.errorLogin);
 
         Button emailSignInButton = (Button) findViewById(R.id.emailSignInButton);
+
+        session = new SessionManager(getApplicationContext());
+
+        if (session.isLoggedIn()) {
+            Intent businessIntent = new Intent(LoginActivity.this, BusinessActivity.class);
+            startActivity(businessIntent);
+            finish();
+        }
 
         emailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -47,11 +67,11 @@ public class LoginActivity extends AppCompatActivity {
         TextView registerSignUpButton = (TextView) findViewById(R.id.registerSignUpTextView);
 
         registerSignUpButton.setOnClickListener(new OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                 startActivity(registerIntent);
-             }
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+            }
         });
 
 
@@ -59,7 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         loginProgressView = findViewById(R.id.loginProgressBar);
     }
 
-    private void attemptLogin(){
+    private void attemptLogin() {
+        errorLoginTextView.setVisibility(View.INVISIBLE);
         emailEditText.setError(null);
         passwordEditText.setError(null);
 
@@ -83,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             emailEditText.setError(getString(R.string.error_invalid_email));
             focusView = emailEditText;
             cancel = true;
-        } else if(TextUtils.isEmpty(password)){
+        } else if (TextUtils.isEmpty(password)) {
             passwordEditText.setError(getString(R.string.error_field_required));
             focusView = passwordEditText;
             cancel = true;
@@ -91,11 +112,62 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-            Intent businessIntent = new Intent(LoginActivity.this, BusinessActivity.class);
-            startActivity(businessIntent);
-            finish();
+            //se envia datos para logear y obtener token
+            try {
+                getAuthToken(email, password);
+            } catch (Exception e) {
+                Log.d("SmartFinance", "Error durante el logeo");
+                errorLoginTextView.setVisibility(View.VISIBLE);
+                finish();
+            }
         }
+    }
+
+    private void getAuthToken(String email, String password) throws Exception {
+        Log.d("SmartFinance", "preparando para autenticar");
+        User userRequest = new User();
+        userRequest.setEmail(email);
+        userRequest.setUserPassword(password);
+        ObjectMapper mapper = new ObjectMapper();
+        AndroidNetworking.post(AuthApi.getAccessTokensUrl())
+                .addJSONObjectBody(new JSONObject(mapper.writeValueAsString(userRequest)))
+                .setPriority(Priority.HIGH)
+                .setTag("SmartFinance")
+                .setContentType("application/json; charset=utf-8")
+                .build()
+                .getAsObject(AccessToken.class, new ParsedRequestListener<AccessToken>() {
+                    @Override
+                    public void onResponse(AccessToken response) {
+                        Log.d("SmartFinance", "logeo exitoso, se obtiene token. " + String.valueOf(response));
+                        AccessToken accessToken = new AccessToken();
+                        accessToken.setToken(response.getToken());
+                        accessToken.setExpiration(response.getExpiration());
+
+                        if (accessToken != null && accessToken.getToken() != null && !accessToken.getToken().isEmpty()) {
+                            Log.d("SmartFinance", "logeo con exito");
+                            session.createLoginSession(accessToken.getToken(), accessToken.getUserId());
+
+                            showProgress(true);
+                            Intent businessIntent = new Intent(LoginActivity.this, BusinessActivity.class);
+                            startActivity(businessIntent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (error.getErrorCode() != 0) {
+                            Log.d("SmartFinance", "onError errorCode : " + error.getErrorCode());
+                            Log.d("SmartFinance", "onError errorBody : " + error.getErrorBody());
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        } else {
+                            // error.getErrorDetail() : connectionError, parseError, requestCancelledError
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        }
+                        Log.d("SmartFinance", "Error de logeo");
+                        errorLoginTextView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
 

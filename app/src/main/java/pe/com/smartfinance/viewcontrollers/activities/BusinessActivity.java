@@ -11,6 +11,7 @@ import java.util.List;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Business;
+import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.viewcontrollers.adapters.BusinessesAdapter;
 
 public class BusinessActivity extends AppCompatActivity {
@@ -18,15 +19,15 @@ public class BusinessActivity extends AppCompatActivity {
     RecyclerView.LayoutManager businessLayoutManager;
     RecyclerView businessRecyclerView;
     BusinessesAdapter businessesAdapter;
-    //SessionManagement sessionManagement;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business);
 
-      //  sessionManagement = new SessionManagement(getApplicationContext());
-      //  sessionManagement.checkLogin();
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
 
         business = new ArrayList<>();
         Resources res = getApplicationContext().getResources();

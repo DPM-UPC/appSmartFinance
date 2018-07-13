@@ -7,15 +7,16 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.viewcontrollers.fragments.expenses.ExpensesFragment;
 import pe.com.smartfinance.viewcontrollers.fragments.incomes.IncomesFragment;
 import pe.com.smartfinance.viewcontrollers.fragments.summary.SummaryFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    SessionManager session;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.getExtras() != null) {
             setTitle(intent.getExtras().getString("name"));
+        }
+        session = new SessionManager(getApplicationContext());
+        if (session.isLoggedIn()) {
+            Intent businessIntent = new Intent(MainActivity.this, BusinessActivity.class);
+            startActivity(businessIntent);
+            finish();
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
