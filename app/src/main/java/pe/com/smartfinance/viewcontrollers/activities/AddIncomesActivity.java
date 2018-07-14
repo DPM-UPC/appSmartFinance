@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.Category;
+import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.viewcontrollers.adapters.IncomesExpandableListAdapter;
 
 public class AddIncomesActivity extends AppCompatActivity {
@@ -91,19 +93,16 @@ public class AddIncomesActivity extends AppCompatActivity {
         listDataHeader.add("Fecha");
 
         // Adding child data
-        List<String> categories = new ArrayList<String>();
-        categories.add("Salario");
-        categories.add("Préstamos");
-        categories.add("Reembolsos");
-        categories.add("Otros");
+        List<Category> categories = new ArrayList<Category>();
+        categories.add(new Category(7));
+        categories.add(new Category(8));
+        categories.add(new Category(9));
+        categories.add(new Category(10));
 
-        List<String> tags = new ArrayList<String>();
-        tags.add("Coche");
-        tags.add("Autobús");
-        tags.add("Gasolina");
-        tags.add("Motocicleta");
-        tags.add("Mantenimiento");
-        tags.add("Otros");
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(new Tag(7));
+        tags.add(new Tag(8));
+        tags.add(new Tag(9));
 
         List<String> dates = new ArrayList<String>();
         dates.add("Fecha");

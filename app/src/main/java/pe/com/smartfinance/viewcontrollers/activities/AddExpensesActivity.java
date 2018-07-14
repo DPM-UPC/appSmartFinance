@@ -16,10 +16,13 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.Category;
+import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.viewcontrollers.adapters.ExpensesExpandableListAdapter;
 
 public class AddExpensesActivity extends AppCompatActivity {
@@ -27,7 +30,10 @@ public class AddExpensesActivity extends AppCompatActivity {
     ExpensesExpandableListAdapter listAdapter;
     ExpandableListView expandableListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+   // HashMap<String, List<Object>> listDataChild;
+    HashMap<String, List<Category>> listCategoryChild;
+    HashMap<String, List<Tag>> listTagChild;
+    HashMap<String, List<String>> listDateChild;
     EditText expensesAmountEditText;
     DatePickerDialog.OnDateSetListener dateSetListener;
     Button addExpensesButton;
@@ -97,36 +103,38 @@ public class AddExpensesActivity extends AppCompatActivity {
 
     private void prepareListData() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, List<String>>();
+        listCategoryChild = new HashMap<String, List<Category>>();
+        listTagChild = new HashMap<String, List<Tag>>();
+        listDateChild = new HashMap<String, List<String>>();
 
         // Adding header data
         listDataHeader.add("Categoria");
         listDataHeader.add("Etiquetas");
         listDataHeader.add("Fecha");
 
+        List<Category> categories = new ArrayList<Category>();
         // Adding child data
-        List<String> categories = new ArrayList<String>();
-        categories.add("Transporte");
-        categories.add("Impuestos");
-        categories.add("Salud");
-        categories.add("Alimentos");
-        categories.add("Hogar");
-        categories.add("Otros");
+        categories.add(new Category(1));
+        categories.add(new Category(2));
+        categories.add(new Category(3));
+        categories.add(new Category(4));
+        categories.add(new Category(5));
+        categories.add(new Category(6));
 
-        List<String> tags = new ArrayList<String>();
-        tags.add("Coche");
-        tags.add("Autobús");
-        tags.add("Gasolina");
-        tags.add("Motocicleta");
-        tags.add("Mantenimiento");
-        tags.add("Otros");
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(new Tag(1));
+        tags.add(new Tag(2));
+        tags.add(new Tag(3));
+        tags.add(new Tag(4));
+        tags.add(new Tag(5));
+        tags.add(new Tag(6));
 
         List<String> dates = new ArrayList<String>();
         dates.add("Fecha");
 
-        listDataChild.put(listDataHeader.get(0), categories); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), tags);
-        listDataChild.put(listDataHeader.get(2), dates);
+        listCategoryChild.put(listDataHeader.get(0), categories); // Header, Child data
+        listTagChild.put(listDataHeader.get(1), tags);
+        listDateChild.put(listDataHeader.get(2), dates);
     }
 
     @Override

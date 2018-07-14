@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -39,13 +40,13 @@ import pe.com.smartfinance.network.AuthApi;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText nameEditText;
-    EditText lastnameEditText;
     EditText emailEditText;
     EditText passwordEditText;
     Button registerButton;
     View progressView;
     View registerFormView;
     Spinner businessSpinner;
+    CheckBox registerCheckBox;
 	SessionManager session;
 	Integer businessId;
 
@@ -54,10 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
-        lastnameEditText = (EditText) findViewById(R.id.lastnameEditText);
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         businessSpinner = (Spinner) findViewById(R.id.businessSpinner);
+        registerCheckBox = (CheckBox) findViewById(R.id.registerCheckBox);
         registerButton = (Button) findViewById(R.id.registerButton);
 
         session = new SessionManager(getApplicationContext());
@@ -101,12 +102,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void attemptRegister(){
         nameEditText.setError(null);
-        lastnameEditText.setError(null);
         emailEditText.setError(null);
         passwordEditText.setError(null);
 
         String name = nameEditText.getText().toString();
-        String lastName = lastnameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
@@ -116,10 +115,6 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(name)) {
             nameEditText.setError(getString(R.string.error_field_required));
             focusView = nameEditText;
-            cancel = true;
-        } else if (TextUtils.isEmpty(lastName)) {
-            lastnameEditText.setError(getString(R.string.error_field_required));
-            focusView = lastnameEditText;
             cancel = true;
         } else if (TextUtils.isEmpty(email)) {
             emailEditText.setError(getString(R.string.error_field_required));
@@ -143,8 +138,11 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             try {
-                // TODO: cambiar el 1 por el valor elegido en el combo
-                registerUser(email, password, getBusinessId());
+                if(!registerCheckBox.isChecked()){
+                    // TODO: cambiar el 1 por el valor elegido en el combo
+                    registerUser(email, password, getBusinessId());
+                    registerCheckBox.setError(getString(R.string.error_field_required));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

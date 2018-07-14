@@ -12,23 +12,37 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.Category;
+import pe.com.smartfinance.models.Tag;
 
 public class ExpensesExpandableListAdapter extends BaseExpandableListAdapter{
     private Context context;
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<String, List<Category>> listCategoryChild;
+    private HashMap<String, List<Tag>> listTagChild;
+    private HashMap<String, List<String>> listDateChild;
 
     public ExpensesExpandableListAdapter(Context context, List<String> listDataHeader,
-                                         HashMap<String, List<String>> listChildData) {
+                                         HashMap<String, List<Category>> listCategoryChild, HashMap<String, List<Tag>> listTagChild,
+                                         HashMap<String, List<String>> listDateChild) {
         this.context = context;
         this.listDataHeader = listDataHeader;
-        this.listDataChild = listChildData;
+        this.listCategoryChild = listCategoryChild;
+        this.listTagChild = listTagChild;
+        this.listDateChild = listDateChild;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+
+        listCategoryChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+        listTagChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+        listDateChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+
+
+
+        return
     }
 
     @Override
