@@ -15,10 +15,9 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Category;
 import pe.com.smartfinance.models.Tag;
 
-public class ExpensesExpandableListAdapter extends BaseExpandableListAdapter{
+/*public class ExpensesExpandableListAdapter extends BaseExpandableListAdapter{
     private Context context;
-    private List<String> listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> listDataHeader;
     private HashMap<String, List<Category>> listCategoryChild;
     private HashMap<String, List<Tag>> listTagChild;
     private HashMap<String, List<String>> listDateChild;
@@ -37,12 +36,9 @@ public class ExpensesExpandableListAdapter extends BaseExpandableListAdapter{
     public Object getChild(int groupPosition, int childPosititon) {
 
         listCategoryChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
-        listTagChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
-        listDateChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+       listTagChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+       return listDateChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
 
-
-
-        return
     }
 
     @Override
@@ -114,4 +110,4 @@ public class ExpensesExpandableListAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-}
+}*/

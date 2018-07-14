@@ -38,11 +38,75 @@
                 android:singleLine="true"/>
         </LinearLayout>
 
-        <ExpandableListView
-            android:id="@+id/expensesExpandibleListView"
-            android:layout_marginTop="15dp"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:rowCount="3"
+            android:columnCount="1">
+
+            <RadioGroup
+                android:id="@+id/categoryRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/categoryTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Categorías" />
+
+                <RadioButton
+                    android:id="@+id/transportRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Transporte"/>
+
+                <RadioButton
+                    android:id="@+id/taxRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Impuestos"/>
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/tagRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/tagTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Etiquetas" />
+
+                <RadioButton
+                    android:id="@+id/carRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Coche"/>
+
+                <RadioButton
+                    android:id="@+id/busRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Autobús"/>
+
+            </RadioGroup>
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            style="@style/Widget.AppCompat.Spinner"
+            android:hint="Selecciona la fecha"/>
 
         <Button
             android:id="@+id/addExpensesButton"
@@ -52,5 +116,6 @@
             android:layout_marginTop="16dp"
             android:text="@string/add"
             android:textStyle="bold" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

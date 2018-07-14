@@ -107,8 +107,8 @@ public class AddIncomesActivity extends AppCompatActivity {
         List<String> dates = new ArrayList<String>();
         dates.add("Fecha");
 
-        listDataChild.put(listDataHeader.get(0), categories); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), tags);
+       // listDataChild.put(listDataHeader.get(0), categories); // Header, Child data
+       // listDataChild.put(listDataHeader.get(1), tags);
         listDataChild.put(listDataHeader.get(2), dates);
     }
 
