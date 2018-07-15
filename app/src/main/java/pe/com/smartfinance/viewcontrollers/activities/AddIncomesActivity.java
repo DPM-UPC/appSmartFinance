@@ -9,9 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,96 +26,108 @@ import java.util.List;
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Category;
 import pe.com.smartfinance.models.Tag;
+import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.viewcontrollers.adapters.IncomesExpandableListAdapter;
 
 public class AddIncomesActivity extends AppCompatActivity {
 
-    IncomesExpandableListAdapter listAdapter;
-    ExpandableListView expandableListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
     EditText incomesAmountEditText;
+    RadioGroup categoryRadioGroup;
+    RadioButton salaryRadioButton;
+    RadioButton loanRadioButton;
+    RadioGroup tagRadioGroup;
+    RadioButton ticketRadioButton;
+    RadioButton receiptRadioButton;
+    TextView dateTextView;
     DatePickerDialog.OnDateSetListener dateSetListener;
-
+    Button addIncomesButton;
+    String date;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_incomes);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+
         incomesAmountEditText = (EditText) findViewById(R.id.incomesAmountEditText);
-        expandableListView = (ExpandableListView) findViewById(R.id.incomesExpandibleListView);
-        prepareListData();
-        listAdapter = new IncomesExpandableListAdapter(this, listDataHeader, listDataChild);
-        expandableListView.setAdapter(listAdapter);
-        expandableListView.expandGroup(0);
+        categoryRadioGroup = (RadioGroup) findViewById(R.id.categoryRadioGroup);
+        salaryRadioButton = (RadioButton) findViewById(R.id.salaryRadioButton);
+        loanRadioButton = (RadioButton) findViewById(R.id.loanRadioButton);
+        tagRadioGroup = (RadioGroup) findViewById(R.id.tagRadioGroup);
+        ticketRadioButton = (RadioButton) findViewById(R.id.ticketRadioButton);
+        receiptRadioButton = (RadioButton) findViewById(R.id.receiptRadioButton);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                final String selected = (String) listAdapter.getChild(groupPosition,  childPosition);
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                String groupTitle = (String) expandableListView.getItemAtPosition(groupPosition);
-
-                if (selected.equals("Fecha")){
-                    Calendar calendar = Calendar.getInstance();
-                    int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
-                    int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                    DatePickerDialog dialog = new DatePickerDialog(
-                            AddIncomesActivity.this,
-                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                            dateSetListener,
-                            year,month,day);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.show();
-
-                } else {
-                    expandableListView.collapseGroup(groupPosition);
-                    expandableListView.expandGroup(groupPosition + 1);
-                }
-
-                return false;
+                DatePickerDialog dialog = new DatePickerDialog(
+                        AddIncomesActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        dateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Log.d("AddExpensesActivity", "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
+                Log.d("AddExpensesActivity", "onDateSet: dd/mm/yyyy: " + dayOfMonth + "/" + month + "/" + year);
+                String date = dayOfMonth + "-" + month + "-" + year;
+                setDate(date);
+                dateTextView.setText(date);
             }
         };
+
+        addIncomesButton = (Button) findViewById(R.id.addIncomesButton);
+        addIncomesButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String amount = incomesAmountEditText.getText().toString();
+                Category category = new Category();
+                category.setAccountIdFk(2);
+
+                if (salaryRadioButton.isChecked()){
+                    category.setCategoryId(7);
+                } else if(loanRadioButton.isChecked()) {
+                    category.setCategoryId(8);
+                }
+
+                Tag tag = new Tag();
+                if (ticketRadioButton.isChecked()){
+                    tag.setTagId(7);
+                } else if(receiptRadioButton.isChecked()) {
+                    tag.setTagId(8);
+                }
+
+                onBackPressed();
+
+                Toast.makeText(getApplicationContext(), "Id account: " + category.getAccountIdFk() + "\nCantidad: " + amount + "\nCategoría: " + category.getCategoryId()
+                        + "\nEtiqueta: " + tag.getTagId()
+                        + "\nFecha: " + getDate(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding header data
-        listDataHeader.add("Categoria");
-        listDataHeader.add("Etiquetas");
-        listDataHeader.add("Fecha");
-
-        // Adding child data
-        List<Category> categories = new ArrayList<Category>();
-        categories.add(new Category(7));
-        categories.add(new Category(8));
-        categories.add(new Category(9));
-        categories.add(new Category(10));
-
-        List<Tag> tags = new ArrayList<Tag>();
-        tags.add(new Tag(7));
-        tags.add(new Tag(8));
-        tags.add(new Tag(9));
-
-        List<String> dates = new ArrayList<String>();
-        dates.add("Fecha");
-
-       // listDataChild.put(listDataHeader.get(0), categories); // Header, Child data
-       // listDataChild.put(listDataHeader.get(1), tags);
-        listDataChild.put(listDataHeader.get(2), dates);
+    public void setDate(String date) {
+        this.date = date;
     }
+
+    public String getDate(){
+        return date;
+    }
+
 
     @Override
     public void onBackPressed() {

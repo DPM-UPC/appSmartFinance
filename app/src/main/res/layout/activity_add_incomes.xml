@@ -57,13 +57,13 @@
                     android:text="Categorías" />
 
                 <RadioButton
-                    android:id="@+id/transportRadioButton"
+                    android:id="@+id/salaryRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Salario"/>
 
                 <RadioButton
-                    android:id="@+id/taxRadioButton"
+                    android:id="@+id/loanRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Préstamos"/>
@@ -84,13 +84,13 @@
                     android:text="Etiquetas" />
 
                 <RadioButton
-                    android:id="@+id/carRadioButton"
+                    android:id="@+id/ticketRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Boletas"/>
 
                 <RadioButton
-                    android:id="@+id/busRadioButton"
+                    android:id="@+id/receiptRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Recibos por honorarios"/>
