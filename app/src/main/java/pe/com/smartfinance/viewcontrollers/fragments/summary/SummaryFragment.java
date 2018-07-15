@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -21,16 +20,13 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONArray;
 
@@ -61,7 +57,7 @@ public class SummaryFragment extends Fragment {
 
     BarChart barChart;
 
-    String[] months = null;
+    String[] summaryMonths = new String[]{"mayo", "junio", "julio"};
     int[] sale = new int[]{25, 35, 40};
     int[] colors = new int[]{Color.BLACK, Color.RED, Color.BLUE};
 
@@ -102,7 +98,6 @@ public class SummaryFragment extends Fragment {
         });
 
         barChart = (BarChart) view.findViewById(R.id.barChart);
-        createChart();
         return view;
     }
 
@@ -128,12 +123,14 @@ public class SummaryFragment extends Fragment {
                         if (operationSummaries != null){
                             totalUtilities = new ArrayList<>();
 
+                            int i = 0;
                             for (OperationSummary operationSummary : operationSummaries){
-                                months = new String[]{operationSummary.getMonthDescription()};
+                                summaryMonths[i++] = operationSummary.getMonthDescription();
                                 totalUtilities.add(operationSummary.getTotalIncome().add(operationSummary.getTotalExpense())
                                         .setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             }
 
+                            //Toast.makeText(getContext(), "Meses: " + Arrays.toString(summaryMonths), Toast.LENGTH_SHORT).show();
 
                             totalIngresos = operationSummaries.get(2).getTotalIncome().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
                             totalGastos = operationSummaries.get(2).getTotalExpense().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
@@ -141,10 +138,9 @@ public class SummaryFragment extends Fragment {
                             totalIncomesTextView.setText(new BigDecimal(totalIngresos).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             totalExpensesTextView.setText(totalGastos);
                             utilityTextViewTextView.setText(totalUtilities.get(2));
-                        }
 
-                        /*Toast.makeText(getContext(), "Id del mes: " + position + "\nTotal ingresos: " + totalIngresos
-                                + "\nTotal gastos: " + totalGastos, Toast.LENGTH_SHORT).show();*/
+                            createChart();
+                        }
 
                     }
                     @Override
@@ -219,47 +215,28 @@ public class SummaryFragment extends Fragment {
         return month.format(calendar.getTime());
     }
 
-    private Chart getSameChart(Chart chart, String description, int textColor, int background, int animateY){
-        chart.getDescription().setText(description);
-        chart.getDescription().setTextSize(15);
-        chart.setBackgroundColor(background);
-        chart.animateY(animateY);
-
-        return chart;
-    }
-
-    private void legend(Chart chart){
-        Legend legend = chart.getLegend();
-        legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-
-        ArrayList<LegendEntry> entries = new ArrayList<>();
-        for (int i = 0; i < months.length; i++){
-            LegendEntry entry = new LegendEntry();
-            entry.formColor = colors[i];
-            entry.label = months[i];
-            entries.add(entry);
-        }
-        legend.setCustom(entries);
-    }
-
+    //data set de utilidades y su ubicacion
     private ArrayList<BarEntry> getBarEntries() {
+        Log.d("SmartFinance", "total 1: " + totalUtilities.get(0));
         ArrayList<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < sale.length; i++){
+        entries.add(new BarEntry(Float.parseFloat(totalUtilities.get(0)), 0));
+        entries.add(new BarEntry(Float.parseFloat(totalUtilities.get(1)), 1));
+        entries.add(new BarEntry(Float.parseFloat(totalUtilities.get(2)), 2));
+        /*for (int i = 0; i < sale.length; i++){
             entries.add(new BarEntry(i, sale[i]));
-       }
+       }*/
         return entries;
     }
 
     private void axisX(XAxis axis){
-        axis.setGranularityEnabled(true);
+        //axis.setGranularityEnabled(true);
         axis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        axis.setValueFormatter(new IndexAxisValueFormatter(months));
+        //axis.setValueFormatter(new IndexAxisValueFormatter(summaryMonths));
     }
 
     private void axisLeft(YAxis axis){
         axis.setSpaceTop(30);
-        axis.setAxisMinimum(0);
+        //axis.setAxisMinimum(0);
     }
 
     private void axisRight(YAxis axis){
@@ -267,10 +244,11 @@ public class SummaryFragment extends Fragment {
     }
 
     public void createChart(){
-        barChart = (BarChart) getSameChart(barChart, "Series", Color.RED, Color.CYAN, 3000);
+        //barChart = (BarChart) getSameChart(barChart, "Series", Color.RED, Color.CYAN, 3000);
         barChart.setDrawGridBackground(true);
         barChart.setDrawBarShadow(true);
         barChart.setData(getBarData());
+        barChart.animateY(3000);
         barChart.invalidate();
 
         axisX(barChart.getXAxis());
@@ -279,17 +257,21 @@ public class SummaryFragment extends Fragment {
     }
 
     private DataSet getData(DataSet dataSet){
-        dataSet.setColors(colors);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextSize(Color.WHITE);
         dataSet.setValueTextSize(10);
         return dataSet;
     }
 
     private BarData getBarData(){
-        BarDataSet barDataSet = (BarDataSet) getData(new BarDataSet(getBarEntries(), ""));
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add(summaryMonths[0]);
+        labels.add(summaryMonths[1]);
+        labels.add(summaryMonths[2]);
+        BarDataSet barDataSet = (BarDataSet) getData(new BarDataSet(getBarEntries(), "Utilidades"));
         barDataSet.setBarShadowColor(Color.GRAY);
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.45f);
+        BarData barData = new BarData(labels, barDataSet);
+        //barData.setBarWidth(0.45f);
         return barData;
     }
 
