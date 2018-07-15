@@ -12,7 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,19 +33,30 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import org.json.JSONArray;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.OperationSummary;
+import pe.com.smartfinance.models.authModels.SessionManager;
+import pe.com.smartfinance.network.ReportApi;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SummaryFragment extends Fragment {
-
+    SessionManager session;
     Spinner monthSpinner;
+    TextView totalExpensesTextView;
+    TextView totalIncomesTextView;
+    String totalIngresos;
+    String totalGastos;
 
     BarChart barChart;
     String[] months = new String[]{"Mayo", "Junio", "Julio"};
@@ -47,15 +66,19 @@ public class SummaryFragment extends Fragment {
     public SummaryFragment() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
 
-        monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
+        session = new SessionManager(getContext());
+        session.checkLogin();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+        monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
+        totalExpensesTextView = (TextView) view.findViewById(R.id.totalExpensesTextView);
+        totalIncomesTextView = (TextView) view.findViewById(R.id.totalIncomesTextView);
+
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
                         R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(adapter);
@@ -64,6 +87,10 @@ public class SummaryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                String positionMonth = String.valueOf(monthSpinner.getSelectedItemPosition() + 1);
+                // TODO: AQUI ESTA EL userBusinessId
+                String userBusinessId = "1";
+                getReportMetrics(positionMonth, userBusinessId);
             }
 
             @Override
@@ -76,6 +103,54 @@ public class SummaryFragment extends Fragment {
         createChart();
         return view;
     }
+
+    private void getReportMetrics(final String position, String userBusinessId) {
+        final ObjectMapper mapper = new ObjectMapper();
+        AndroidNetworking.get(ReportApi.getReportUrl())
+                .addQueryParameter("user_business_id_fk", userBusinessId)
+                .addQueryParameter("num_month", position)
+               // .addHeaders("token", "1234")
+                .setTag("SmartFinance")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<OperationSummary> operationSummaries = new ArrayList<>();
+                        try {
+                            operationSummaries = mapper.readValue(response.toString(), new TypeReference<List<OperationSummary>>(){});
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (operationSummaries != null){
+                            for (OperationSummary operationSummary : operationSummaries){
+                                totalIngresos = operationSummary.getTotalIncome().toString();
+                                totalGastos = operationSummary.getTotalExpense().toString();
+                            }
+
+                            totalIncomesTextView.setText(totalIngresos);
+                            totalExpensesTextView.setText(totalGastos);
+                        }
+
+                        Toast.makeText(getContext(), "Id del mes: " + position + "\nTotal ingresos: " + totalIngresos
+                                + "\nTotal gastos: " + totalGastos, Toast.LENGTH_SHORT).show();
+
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        if (error.getErrorCode() != 0) {
+                            Log.d("SmartFinance", "onError errorCode : " + error.getErrorCode());
+                            Log.d("SmartFinance", "onError errorBody : " + error.getErrorBody());
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        } else {
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        }
+                        Log.d("SmartFinance", "Error en resumen financiero");
+                    }
+                });
+    }
+
 
     public int setCurrentMonthSpinner() {
         String[] months = getResources().getStringArray(R.array.months);
