@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -59,8 +60,9 @@ public class SummaryFragment extends Fragment {
     List<String> totalUtilities;
 
     BarChart barChart;
-    String[] months = new String[]{"mayo", "junio", "julio"};
-    int[] sale = new int[]{25, 30, 15};
+
+    String[] months = null;
+    int[] sale = new int[]{25, 35, 40};
     int[] colors = new int[]{Color.BLACK, Color.RED, Color.BLUE};
 
     public SummaryFragment() {
@@ -89,7 +91,6 @@ public class SummaryFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String positionMonth = String.valueOf(monthSpinner.getSelectedItemPosition() + 1);
-                // TODO: AQUI ESTA EL userBusinessId
                 String userBusinessId = "1";
                 getReportMetrics(positionMonth, userBusinessId);
             }
@@ -126,10 +127,15 @@ public class SummaryFragment extends Fragment {
 
                         if (operationSummaries != null){
                             totalUtilities = new ArrayList<>();
+
                             for (OperationSummary operationSummary : operationSummaries){
+                                months = new String[]{operationSummary.getMonthDescription()};
                                 totalUtilities.add(operationSummary.getTotalIncome().add(operationSummary.getTotalExpense())
                                         .setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             }
+
+                            Toast.makeText(getContext(), "Meses: " + months, Toast.LENGTH_SHORT).show();
+
                             totalIngresos = operationSummaries.get(2).getTotalIncome().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
                             totalGastos = operationSummaries.get(2).getTotalExpense().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
 
@@ -242,7 +248,7 @@ public class SummaryFragment extends Fragment {
         ArrayList<BarEntry> entries = new ArrayList<>();
         for (int i = 0; i < sale.length; i++){
             entries.add(new BarEntry(i, sale[i]));
-        }
+       }
         return entries;
     }
 

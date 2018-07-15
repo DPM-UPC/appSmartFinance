@@ -97,16 +97,16 @@
                     android:text="Autobús"/>
 
             </RadioGroup>
-        </GridLayout>
 
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            style="@style/Widget.AppCompat.Spinner"
-            android:hint="Selecciona la fecha"/>
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                style="@style/Widget.AppCompat.Spinner"
+                android:hint="Selecciona la fecha"/>
+
+        </GridLayout>
 
         <Button
             android:id="@+id/addExpensesButton"

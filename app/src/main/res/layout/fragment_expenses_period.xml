@@ -11,11 +11,99 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/dateExpenseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_gravity="center"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="1"
+            android:columnCount="3">
+
+            <TextView
+                android:id="@+id/categoryExpenseTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tagExpenseTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/amountExpenseTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:layout_gravity="right"/>
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/dateExpenseTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="1"
+            android:columnCount="3">
+
+            <TextView
+                android:id="@+id/categoryExpenseTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tagExpenseTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/amountExpenseTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:layout_gravity="right"/>
+        </GridLayout>
+
+
+        <TextView
             android:id="@+id/defaultTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAlignment="center"
             android:gravity="center"
-            android:text="@string/default_text_expenses" />
+            android:text="@string/default_text_expenses"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 </FrameLayout>

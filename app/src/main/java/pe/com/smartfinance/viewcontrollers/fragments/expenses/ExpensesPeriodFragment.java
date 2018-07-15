@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -17,16 +18,21 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import pe.com.smartfinance.R;
+import pe.com.smartfinance.models.Category;
 import pe.com.smartfinance.models.OperationModels.Operation;
+import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
+import pe.com.smartfinance.utils.DateFormatter;
 
 
 /**
@@ -36,11 +42,20 @@ public class ExpensesPeriodFragment extends Fragment {
 
     SessionManager session;
     List<Operation> operations;
+    TextView defaultTextView;
+    TextView dateExpenseTextView;
+    TextView categoryExpenseTextView;
+    TextView tagExpenseTextView;
+    TextView amountExpenseTextView;
+
+    TextView dateExpenseTextView2;
+    TextView categoryExpenseTextView2;
+    TextView tagExpenseTextView2;
+    TextView amountExpenseTextView2;
 
     private static final int ACCOUNT_EXPENSE = 2;
 
     public ExpensesPeriodFragment() {
-        // Required empty public constructor
     }
 
 
@@ -50,6 +65,18 @@ public class ExpensesPeriodFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_expenses_period, container, false);
         session = new SessionManager(getContext());
         session.checkLogin();
+
+        defaultTextView = (TextView) view.findViewById(R.id.defaultTextView);
+
+        dateExpenseTextView = (TextView) view.findViewById(R.id.dateExpenseTextView);
+        categoryExpenseTextView = (TextView) view.findViewById(R.id.categoryExpenseTextView);
+        tagExpenseTextView = (TextView) view.findViewById(R.id.tagExpenseTextView);
+        amountExpenseTextView = (TextView) view.findViewById(R.id.amountExpenseTextView);
+
+        dateExpenseTextView2 = (TextView) view.findViewById(R.id.dateExpenseTextView2);
+        categoryExpenseTextView2 = (TextView) view.findViewById(R.id.categoryExpenseTextView2);
+        tagExpenseTextView2 = (TextView) view.findViewById(R.id.tagExpenseTextView2);
+        amountExpenseTextView2 = (TextView) view.findViewById(R.id.amountExpenseTextView2);
 
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -75,13 +102,34 @@ public class ExpensesPeriodFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         operations = new ArrayList<>();
                         try {
-                            operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {
-                            });
+                            operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {});
                             Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
+                        if (operations != null){
+
+                            for (Operation operation : operations){
+                                operation.getCreationDate();
+                                operation.getCategoryIdFk();
+                                operation.getTagIdFk();
+                                operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                            }
+
+                            dateExpenseTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
+                            categoryExpenseTextView.setText(operations.get(0).getCategoryIdFk().toString());
+                            tagExpenseTextView.setText(operations.get(0).getTagIdFk().toString());
+                            amountExpenseTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+
+                            dateExpenseTextView2.setText(DateFormatter.getFormatDate(operations.get(1).getCreationDate(), "dd-M-yyyy"));
+                            categoryExpenseTextView2.setText(operations.get(1).getCategoryIdFk().toString());
+                            tagExpenseTextView2.setText(operations.get(1).getTagIdFk().toString());
+                            amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+
+                        } else {
+                            defaultTextView.setVisibility(TextView.VISIBLE);
+                        }
                     }
 
                     @Override
