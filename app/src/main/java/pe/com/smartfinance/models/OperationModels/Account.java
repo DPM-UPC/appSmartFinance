@@ -1,14 +1,17 @@
-package pe.com.smartfinance.models;
+package pe.com.smartfinance.models.OperationModels;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class Category {
-    @JsonProperty(value = "category_id")
-    private Integer categoryId;
+public class Account {
+    @JsonProperty(value = "account_id")
+    private Integer accountId;
     private String description;
+    @JsonProperty(value = "main_account")
+    private Integer mainAccount;
+    private Integer sign;
     private Integer state;
     @JsonProperty(value = "creation_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "America/Bogota")
@@ -16,22 +19,20 @@ public class Category {
     @JsonProperty(value = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "America/Bogota")
     private Date updateDate;
-    @JsonProperty(value = "account_idd_fk")
-    private Integer accountIdFk;
 
-    public Category() {
+    public Account(Integer accountId) {
+        this.accountId = accountId;
     }
 
-    public Category(Integer categoryId) {
-        this.categoryId = categoryId;
+    public Account() {
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getAccountId() {
+        return accountId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
     }
 
     public String getDescription() {
@@ -40,6 +41,22 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(Integer mainAccount) {
+        this.mainAccount = mainAccount;
+    }
+
+    public Integer getSign() {
+        return sign;
+    }
+
+    public void setSign(Integer sign) {
+        this.sign = sign;
     }
 
     public Integer getState() {
@@ -66,25 +83,19 @@ public class Category {
         this.updateDate = updateDate;
     }
 
-    public Integer getAccountIdFk() {
-        return accountIdFk;
-    }
-
-    public void setAccountIdFk(Integer accountIdFk) {
-        this.accountIdFk = accountIdFk;
-    }
 
     @Override
     public String toString() {
-        return "Category{" +
-                "categoryId=" + categoryId +
+        return "Account{" +
+                "accountId=" + accountId +
                 ", description='" + description + '\'' +
-                ", state=" + state +
-                ", creationDate=" + creationDate +
+                ", mainAccount='" + mainAccount + '\'' +
+                ", sign='" + sign + '\'' +
+                ", state='" + state + '\'' +
+                ", creationDate='" + creationDate + '\'' +
                 ", updateDate=" + updateDate +
-                ", accountIdFk=" + accountIdFk +
                 '}';
     }
+
+
 }
-
-

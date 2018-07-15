@@ -17,14 +17,24 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.Category;
+import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.models.authModels.SessionManager;
+import pe.com.smartfinance.network.OperationApi;
 
 public class AddExpensesActivity extends AppCompatActivity {
 
@@ -40,6 +50,8 @@ public class AddExpensesActivity extends AppCompatActivity {
     Button addExpensesButton;
     String date;
     SessionManager session;
+
+    private static final int ACCOUNT_EXPENSE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +91,8 @@ public class AddExpensesActivity extends AppCompatActivity {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Log.d("AddExpensesActivity", "onDateSet: dd/mm/yyyy: " + dayOfMonth + "/" + month + "/" + year);
-                String date = dayOfMonth + "-" + month + "-" + year;
+                Log.d("AddExpensesActivity", "onDateSet: dd/mm/yyyy: " + dayOfMonth + "/" + ((month + 1) < 10 ? "0" + month : "" + month) + "/" + year);
+                String date = dayOfMonth + "-" + (++month < 10 ? "0" + month : "" + month) + "-" + year;
                 setDate(date);
                 dateTextView.setText(date);
             }
@@ -93,7 +105,7 @@ public class AddExpensesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String amount = expensesAmountEditText.getText().toString();
                 Category category = new Category();
-                category.setAccountIdFk(1);
+                category.setAccountIdFk(ACCOUNT_EXPENSE);
 
                 if (transportRadioButton.isChecked()){
                     category.setCategoryId(1);
@@ -110,11 +122,65 @@ public class AddExpensesActivity extends AppCompatActivity {
 
                 onBackPressed();
 
-                Toast.makeText(getApplicationContext(), "Id account: " + category.getAccountIdFk() + "\nCantidad: " + amount + "\nCategoría: " + category.getCategoryId()
+                //se grabar el gasto
+                try {
+                    registerOperation(category.getAccountIdFk(), new BigDecimal(amount), 1, category.getCategoryId(), tag.getTagId(), getDate());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                /*Toast.makeText(getApplicationContext(), "Id account: " + category.getAccountIdFk() + "\nCantidad: " + amount + "\nCategoría: " + category.getCategoryId()
                         + "\nEtiqueta: " + tag.getTagId()
-                        + "\nFecha: " + getDate(), Toast.LENGTH_LONG).show();
+                        + "\nFecha: " + getDate(), Toast.LENGTH_LONG).show();*/
             }
         });
+    }
+
+    private void registerOperation(Integer accountId, BigDecimal amount, Integer businessId, Integer categoryId, Integer tagId, String operationDate) throws Exception {
+        Log.d("SmartFinance", "preparando para registrar");
+
+        Operation operationReq = new Operation();
+        operationReq.setAccountIdFk(accountId);
+        operationReq.setAmount(amount);
+        operationReq.setUserBusinessIdFk(businessId);
+        operationReq.setCategoryIdFk(categoryId);
+        operationReq.setTagIdFk(tagId);
+        operationReq.setOperationDate(operationDate);
+
+        final ObjectMapper mapper = new ObjectMapper();
+        AndroidNetworking.post(OperationApi.getOperationUrl())
+                .addJSONObjectBody(new JSONObject(mapper.writeValueAsString(operationReq)))
+                .setPriority(Priority.HIGH)
+                .setTag("SmartFinance")
+                .setContentType("application/json; charset=utf-8")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("SmartFinance", "registro exitoso, se obtiene datos de la operacion. " + String.valueOf(response));
+                        Operation operationReponse = null;
+                        try {
+                            operationReponse = mapper.readValue(response.toString(), Operation.class);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getApplicationContext(), "Operación de gasto por el monto de \"" + operationReponse.getAmount() + " nuevos soles\", registrado con éxito."
+                                , Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (error.getErrorCode() != 0) {
+                            Log.d("SmartFinance", "onError errorCode : " + error.getErrorCode());
+                            Log.d("SmartFinance", "onError errorBody : " + error.getErrorBody());
+                            Log.d("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        } else {
+                            // error.getErrorDetail() : connectionError, parseError, requestCancelledError
+                            Log.e("SmartFinance", "onError errorDetail : " + error.getErrorDetail());
+                        }
+                        Log.e("SmartFinance", "Error de registro, errorCode: " + error.getErrorCode());
+                    }
+                });
     }
 
     public void setDate(String date) {

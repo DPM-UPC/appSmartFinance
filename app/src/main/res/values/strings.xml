@@ -44,18 +44,18 @@
     <string name="default_text_incomes">Aquí no hay ingresos. Favor de registrarlos para que tengas un mejor control financiero de tu negocio</string>
 
     <string-array name="months">
-        <item>Enero</item>
-        <item>Febrero</item>
+        <item>enero</item>
+        <item>febrero</item>
         <item>Marzo</item>
-        <item>Abril</item>
-        <item>Mayo</item>
-        <item>Junio</item>
-        <item>Julio</item>
-        <item>Agosto</item>
-        <item>Setiembre</item>
-        <item>Octubre</item>
-        <item>Noviembre</item>
-        <item>Deciembre</item>
+        <item>abril</item>
+        <item>mayo</item>
+        <item>junio</item>
+        <item>julio</item>
+        <item>agosto</item>
+        <item>setiembre</item>
+        <item>octubre</item>
+        <item>noviembre</item>
+        <item>diciembre</item>
     </string-array>
     <string-array name="business">
         <item>Albañileria y Construcción</item>

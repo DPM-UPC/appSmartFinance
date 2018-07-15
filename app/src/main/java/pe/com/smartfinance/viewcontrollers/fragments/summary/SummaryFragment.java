@@ -1,7 +1,6 @@
 package pe.com.smartfinance.viewcontrollers.fragments.summary;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -36,11 +34,11 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationSummary;
@@ -55,11 +53,13 @@ public class SummaryFragment extends Fragment {
     Spinner monthSpinner;
     TextView totalExpensesTextView;
     TextView totalIncomesTextView;
+    TextView utilityTextViewTextView;
     String totalIngresos;
     String totalGastos;
+    List<String> totalUtilities;
 
     BarChart barChart;
-    String[] months = new String[]{"Mayo", "Junio", "Julio"};
+    String[] months = new String[]{"mayo", "junio", "julio"};
     int[] sale = new int[]{25, 30, 15};
     int[] colors = new int[]{Color.BLACK, Color.RED, Color.BLUE};
 
@@ -77,6 +77,7 @@ public class SummaryFragment extends Fragment {
         monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
         totalExpensesTextView = (TextView) view.findViewById(R.id.totalExpensesTextView);
         totalIncomesTextView = (TextView) view.findViewById(R.id.totalIncomesTextView);
+        utilityTextViewTextView = view.findViewById(R.id.utilityTextView);
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
                         R.array.months, android.R.layout.simple_spinner_item);
@@ -124,17 +125,21 @@ public class SummaryFragment extends Fragment {
                         }
 
                         if (operationSummaries != null){
+                            totalUtilities = new ArrayList<>();
                             for (OperationSummary operationSummary : operationSummaries){
-                                totalIngresos = operationSummary.getTotalIncome().toString();
-                                totalGastos = operationSummary.getTotalExpense().toString();
+                                totalUtilities.add(operationSummary.getTotalIncome().add(operationSummary.getTotalExpense())
+                                        .setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             }
+                            totalIngresos = operationSummaries.get(2).getTotalIncome().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
+                            totalGastos = operationSummaries.get(2).getTotalExpense().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
 
-                            totalIncomesTextView.setText(totalIngresos);
+                            totalIncomesTextView.setText(new BigDecimal(totalIngresos).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             totalExpensesTextView.setText(totalGastos);
+                            utilityTextViewTextView.setText(totalUtilities.get(2));
                         }
 
-                        Toast.makeText(getContext(), "Id del mes: " + position + "\nTotal ingresos: " + totalIngresos
-                                + "\nTotal gastos: " + totalGastos, Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(getContext(), "Id del mes: " + position + "\nTotal ingresos: " + totalIngresos
+                                + "\nTotal gastos: " + totalGastos, Toast.LENGTH_SHORT).show();*/
 
                     }
                     @Override
@@ -159,40 +164,40 @@ public class SummaryFragment extends Fragment {
 
             switch (month){
                 case "January":
-                    month = "Enero";
+                    month = "enero";
                     break;
                 case "February":
-                    month = "Febrero";
+                    month = "febrero";
                     break;
                 case "March":
-                    month = "Marzo";
+                    month = "marzo";
                     break;
                 case "April":
-                    month = "Abril";
+                    month = "abril";
                     break;
                 case "May":
-                    month = "Mayo";
+                    month = "mayo";
                     break;
                 case "June":
-                    month = "Junio";
+                    month = "junio";
                     break;
                 case "July":
-                    month = "Julio";
+                    month = "julio";
                     break;
                 case "August":
-                    month = "Agosto";
+                    month = "agosto";
                     break;
                 case "September":
-                    month = "Septiembre";
+                    month = "septiembre";
                     break;
                 case "October":
-                    month = "Octubre";
+                    month = "octubre";
                     break;
                 case "November":
-                    month = "Noviembre";
+                    month = "noviembre";
                     break;
                 case "December":
-                    month = "Diciembre";
+                    month = "diciembre";
                     break;
             }
 

@@ -1,13 +1,15 @@
-package pe.com.smartfinance.models;
+package pe.com.smartfinance.models.OperationModels;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class Category {
-    @JsonProperty(value = "category_id")
-    private Integer categoryId;
+import pe.com.smartfinance.models.Category;
+
+public class Tag {
+    @JsonProperty(value = "tag_id")
+    private Integer tagId;
     private String description;
     private Integer state;
     @JsonProperty(value = "creation_date")
@@ -16,22 +18,23 @@ public class Category {
     @JsonProperty(value = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "America/Bogota")
     private Date updateDate;
-    @JsonProperty(value = "account_idd_fk")
-    private Integer accountIdFk;
+    @JsonProperty(value = "category_id_fk")
+    private Integer categoryIdFk;
+    private Category category;
 
-    public Category() {
+    public Tag() {
     }
 
-    public Category(Integer categoryId) {
-        this.categoryId = categoryId;
+    public Tag(Integer tagId) {
+        this.tagId = tagId;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getTagId() {
+        return tagId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
     }
 
     public String getDescription() {
@@ -66,25 +69,32 @@ public class Category {
         this.updateDate = updateDate;
     }
 
-    public Integer getAccountIdFk() {
-        return accountIdFk;
+    public Integer getCategoryIdFk() {
+        return categoryIdFk;
     }
 
-    public void setAccountIdFk(Integer accountIdFk) {
-        this.accountIdFk = accountIdFk;
+    public void setCategoryIdFk(Integer categoryIdFk) {
+        this.categoryIdFk = categoryIdFk;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
-                "categoryId=" + categoryId +
+        return "Tag{" +
+                "tagId=" + tagId +
                 ", description='" + description + '\'' +
                 ", state=" + state +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updateDate +
-                ", accountIdFk=" + accountIdFk +
+                ", categoryIdFk=" + categoryIdFk +
+                ", category=" + category +
                 '}';
     }
 }
-
-
