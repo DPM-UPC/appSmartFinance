@@ -11,10 +11,96 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/dateIncomeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_gravity="center"/>
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="2dp"
+              android:background="@android:color/darker_gray"/>
+
+          <GridLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:rowCount="1"
+              android:columnCount="3">
+
+              <TextView
+                  android:id="@+id/categoryIncomeTextView"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="start"
+                  android:textSize="16dp" />
+
+              <TextView
+                  android:id="@+id/tagIncomeTextView"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="16dp"
+                  android:layout_marginLeft="10dp"
+                  android:gravity="center" />
+
+              <TextView
+                  android:id="@+id/amountIncomeTextView"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="right"
+                  android:textSize="16dp"
+                  android:layout_gravity="right"/>
+          </GridLayout>
+
+          <TextView
+              android:id="@+id/dateIncomeTextView2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textStyle="bold"
+              android:textSize="16dp"
+              android:layout_marginTop="10dp"
+              android:layout_gravity="center"/>
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="2dp"
+              android:background="@android:color/darker_gray"/>
+
+          <GridLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:rowCount="1"
+              android:columnCount="3">
+
+              <TextView
+                  android:id="@+id/categoryIncomeTextView2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="start"
+                  android:textSize="16dp" />
+
+              <TextView
+                  android:id="@+id/tagIncomeTextView2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="16dp"
+                  android:layout_marginLeft="10dp"
+                  android:gravity="center" />
+
+              <TextView
+                  android:id="@+id/amountIncomeTextView2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="right"
+                  android:textSize="16dp"
+                  android:layout_gravity="right"/>
+          </GridLayout>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAlignment="center"
             android:gravity="center"
+            android:visibility="invisible"
             android:text="@string/default_text_incomes" />
     </LinearLayout>
 </FrameLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -27,6 +29,7 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
+import pe.com.smartfinance.utils.DateFormatter;
 
 
 /**
@@ -36,6 +39,17 @@ public class IncomesCategoryFragment extends Fragment {
 
     SessionManager session;
     List<Operation> operations;
+
+    TextView defaultTextView;
+    TextView dateIncomeTextView;
+    TextView categoryIncomeTextView;
+    TextView tagIncomeTextView;
+    TextView amountIncomeTextView;
+
+    TextView dateIncomeTextView2;
+    TextView categoryIncomeTextView2;
+    TextView tagIncomeTextView2;
+    TextView amountIncomeTextView2;
 
     private static final int ACCOUNT_INCOME = 1;
 
@@ -52,6 +66,17 @@ public class IncomesCategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_incomes_category, container, false);
         session = new SessionManager(getContext());
         session.checkLogin();
+
+        defaultTextView = (TextView) view.findViewById(R.id.defaultTextView);
+
+        categoryIncomeTextView = (TextView) view.findViewById(R.id.categoryIncomeTextView);
+        tagIncomeTextView = (TextView) view.findViewById(R.id.tagIncomeTextView);
+        amountIncomeTextView = (TextView) view.findViewById(R.id.amountIncomeTextView);
+
+        categoryIncomeTextView2 = (TextView) view.findViewById(R.id.categoryIncomeTextView2);
+        tagIncomeTextView2 = (TextView) view.findViewById(R.id.tagIncomeTextView2);
+        amountIncomeTextView2 = (TextView) view.findViewById(R.id.amountIncomeTextView2);
+
 
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -84,6 +109,26 @@ public class IncomesCategoryFragment extends Fragment {
                             e.printStackTrace();
                         }
 
+                        if (operations != null){
+
+                            for (Operation operation : operations){
+                                operation.getCreationDate();
+                                operation.getTag().getCategory().getDescription();
+                                operation.getTag().getDescription();
+                                operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                            }
+
+                            categoryIncomeTextView.setText(operations.get(0).getTag().getCategory().getDescription().toString());
+                            tagIncomeTextView.setText(operations.get(0).getTag().getDescription().toString());
+                            amountIncomeTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+
+                            categoryIncomeTextView2.setText(operations.get(1).getTag().getCategory().getDescription().toString());
+                            tagIncomeTextView2.setText(operations.get(1).getTag().getDescription().toString());
+                            amountIncomeTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+
+                        } else {
+                            defaultTextView.setVisibility(TextView.VISIBLE);
+                        }
                     }
 
                     @Override
