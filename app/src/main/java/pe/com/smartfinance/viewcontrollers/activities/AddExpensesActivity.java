@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +93,7 @@ public class AddExpensesActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Log.d("AddExpensesActivity", "onDateSet: dd/mm/yyyy: " + dayOfMonth + "/" + ((month + 1) < 10 ? "0" + month : "" + month) + "/" + year);
-                String date = (++dayOfMonth < 10 ? "0" + dayOfMonth : "" + dayOfMonth) + "-" + (++month < 10 ? "0" + month : "" + month) + "-" + year;
+                String date = (dayOfMonth < 10 ? "0" + dayOfMonth : "" + dayOfMonth) + "-" + (++month < 10 ? "0" + month : "" + month) + "-" + year;
                 setDate(date);
                 dateTextView.setText(date);
             }
@@ -120,18 +121,29 @@ public class AddExpensesActivity extends AppCompatActivity {
                     tag.setTagId(2);
                 }
 
-                onBackPressed();
-
                 //se grabar el gasto
                 try {
-                    registerOperation(category.getAccountIdFk(), new BigDecimal(amount), 1, category.getCategoryId(), tag.getTagId(), getDate());
+                    boolean cancel = false;
+                    if (TextUtils.isEmpty(expensesAmountEditText.getText())) {
+                        cancel = true;
+                    } else if (category.getCategoryId() == null) {
+                        cancel = true;
+                    } else if (tag.getTagId() == null) {
+                        cancel = true;
+                    } else if (TextUtils.isEmpty(dateTextView.getText())) {
+                        cancel = true;
+                    }
+
+                    if (!cancel) {
+                        registerOperation(category.getAccountIdFk(), new BigDecimal(amount), 1, category.getCategoryId(), tag.getTagId(), getDate());
+
+                        onBackPressed();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                /*Toast.makeText(getApplicationContext(), "Id account: " + category.getAccountIdFk() + "\nCantidad: " + amount + "\nCategoría: " + category.getCategoryId()
-                        + "\nEtiqueta: " + tag.getTagId()
-                        + "\nFecha: " + getDate(), Toast.LENGTH_LONG).show();*/
             }
         });
     }
