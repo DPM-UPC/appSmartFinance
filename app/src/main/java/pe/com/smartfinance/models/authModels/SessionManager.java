@@ -100,7 +100,10 @@ public class SessionManager {
      */
     public HashMap<String, String> getUserSessionDetails() {
         HashMap<String, String> user = new HashMap<>();
-        // user userId
+        // token
+        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
+
+        // user id
         user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
 
         // user email id

@@ -152,6 +152,7 @@ public class AddIncomesActivity extends AppCompatActivity {
         AndroidNetworking.post(OperationApi.getOperationUrl())
                 .addJSONObjectBody(new JSONObject(mapper.writeValueAsString(operationReq)))
                 .setPriority(Priority.HIGH)
+                .addHeaders("Authorization", "Bearer " + session.getUserSessionDetails().get("token"))
                 .setTag("SmartFinance")
                 .setContentType("application/json; charset=utf-8")
                 .build()

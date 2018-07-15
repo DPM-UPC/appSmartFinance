@@ -106,7 +106,7 @@ public class SummaryFragment extends Fragment {
         AndroidNetworking.get(ReportApi.getReportUrl())
                 .addQueryParameter("user_business_id_fk", userBusinessId)
                 .addQueryParameter("num_month", position)
-               // .addHeaders("token", "1234")
+                .addHeaders("Authorization", "Bearer " + session.getUserSessionDetails().get("token"))
                 .setTag("SmartFinance")
                 .setPriority(Priority.HIGH)
                 .build()

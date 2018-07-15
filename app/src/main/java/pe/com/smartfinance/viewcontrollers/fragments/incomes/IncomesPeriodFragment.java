@@ -99,7 +99,7 @@ public class IncomesPeriodFragment extends Fragment {
                 .addQueryParameter("user_business_id", userBusinessId.toString())
                 .addQueryParameter("account_id", accountId.toString())
                 .addQueryParameter("period", period.toString())
-                // .addHeaders("token", "1234")
+                .addHeaders("Authorization", "Bearer " + session.getUserSessionDetails().get("token"))
                 .setTag("SmartFinance")
                 .setPriority(Priority.HIGH)
                 .build()

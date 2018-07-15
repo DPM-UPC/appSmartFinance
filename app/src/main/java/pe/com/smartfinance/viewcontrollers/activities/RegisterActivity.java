@@ -138,9 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             try {
-                if(!registerCheckBox.isChecked()){
-                    // TODO: cambiar el 1 por el valor elegido en el combo
+                if (registerCheckBox.isChecked()) {
                     registerUser(email, password, getBusinessId());
+                } else {
                     registerCheckBox.setError(getString(R.string.error_field_required));
                 }
             } catch (Exception e) {
