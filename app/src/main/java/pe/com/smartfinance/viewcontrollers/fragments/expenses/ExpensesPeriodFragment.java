@@ -1,12 +1,17 @@
 package pe.com.smartfinance.viewcontrollers.fragments.expenses;
 
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,7 @@ import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
 import pe.com.smartfinance.utils.DateFormatter;
+import pe.com.smartfinance.viewcontrollers.adapters.ExpensesPeriodAdapter;
 
 
 /**
@@ -41,7 +47,13 @@ import pe.com.smartfinance.utils.DateFormatter;
 public class ExpensesPeriodFragment extends Fragment {
 
     SessionManager session;
-    List<Operation> operations;
+    //RecyclerView
+    RecyclerView expensesPeriodRecyclerView;
+    RecyclerView.LayoutManager expensesLayoutManager;
+    ExpensesPeriodAdapter expensesPeriodAdapter;
+    List<Operation>       operations;
+    //RecyclerView
+
     TextView defaultTextView;
     TextView dateExpenseTextView;
     TextView categoryExpenseTextView;
@@ -68,7 +80,19 @@ public class ExpensesPeriodFragment extends Fragment {
 
         defaultTextView = (TextView) view.findViewById(R.id.defaultTextView);
 
-        dateExpenseTextView = (TextView) view.findViewById(R.id.dateExpenseTextView);
+        //RecyclerView
+        expensesPeriodRecyclerView = (RecyclerView) view.findViewById(R.id.expensesPeriodRecyclerView);
+        Resources resources = getContext().getResources();
+        operations = new ArrayList<>();
+        //operations.add(resources.getString(R.string.dateExpenseTextView));
+
+        expensesPeriodAdapter = new ExpensesPeriodAdapter(operations);
+        expensesLayoutManager = new LinearLayoutManager(getContext());
+        expensesPeriodRecyclerView.setAdapter(expensesPeriodAdapter);
+        expensesPeriodRecyclerView.setLayoutManager(expensesLayoutManager);
+        //RecyclerView
+
+     /*   dateExpenseTextView = (TextView) view.findViewById(R.id.dateExpenseTextView);
         categoryExpenseTextView = (TextView) view.findViewById(R.id.categoryExpenseTextView);
         tagExpenseTextView = (TextView) view.findViewById(R.id.tagExpenseTextView);
         amountExpenseTextView = (TextView) view.findViewById(R.id.amountExpenseTextView);
@@ -76,7 +100,7 @@ public class ExpensesPeriodFragment extends Fragment {
         dateExpenseTextView2 = (TextView) view.findViewById(R.id.dateExpenseTextView2);
         categoryExpenseTextView2 = (TextView) view.findViewById(R.id.categoryExpenseTextView2);
         tagExpenseTextView2 = (TextView) view.findViewById(R.id.tagExpenseTextView2);
-        amountExpenseTextView2 = (TextView) view.findViewById(R.id.amountExpenseTextView2);
+        amountExpenseTextView2 = (TextView) view.findViewById(R.id.amountExpenseTextView2);*/
 
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -93,7 +117,7 @@ public class ExpensesPeriodFragment extends Fragment {
                 .addQueryParameter("user_business_id", userBusinessId.toString())
                 .addQueryParameter("account_id", accountId.toString())
                 .addQueryParameter("period", period.toString())
-                // .addHeaders("token", "1234")
+                // .addHeaders("apiKey", "1234")
                 .setTag("SmartFinance")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -112,20 +136,20 @@ public class ExpensesPeriodFragment extends Fragment {
 
                             for (Operation operation : operations){
                                 operation.getCreationDate();
-                                operation.getCategoryIdFk();
-                                operation.getTagIdFk();
+                                operation.getTag().getCategory().getDescription();
+                                operation.getTag().getDescription();
                                 operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
                             }
 
-                            dateExpenseTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView.setText(operations.get(0).getCategoryIdFk().toString());
-                            tagExpenseTextView.setText(operations.get(0).getTagIdFk().toString());
+                         /*   dateExpenseTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
+                            categoryExpenseTextView.setText(operations.get(0).getTag().getCategory().getDescription().toString());
+                            tagExpenseTextView.setText(operations.get(0).getTag().getDescription().toString());
                             amountExpenseTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
 
                             dateExpenseTextView2.setText(DateFormatter.getFormatDate(operations.get(1).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView2.setText(operations.get(1).getCategoryIdFk().toString());
-                            tagExpenseTextView2.setText(operations.get(1).getTagIdFk().toString());
-                            amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+                            categoryExpenseTextView2.setText(operations.get(1).getTag().getCategory().getDescription().toString());
+                            tagExpenseTextView2.setText(operations.get(1).getTag().getDescription().toString());
+                            amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());*/
 
                         } else {
                             defaultTextView.setVisibility(TextView.VISIBLE);

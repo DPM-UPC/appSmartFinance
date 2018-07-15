@@ -10,7 +10,15 @@
         android:layout_margin="15dp"
         android:orientation="vertical">
 
-        <TextView
+        <!--RecylerView-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/expensesPeriodRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!--RecylerView-->
+
+       <!-- <TextView
             android:id="@+id/dateExpenseTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,7 +101,7 @@
                 android:gravity="right"
                 android:textSize="16dp"
                 android:layout_gravity="right"/>
-        </GridLayout>
+        </GridLayout>-->
 
 
         <TextView
