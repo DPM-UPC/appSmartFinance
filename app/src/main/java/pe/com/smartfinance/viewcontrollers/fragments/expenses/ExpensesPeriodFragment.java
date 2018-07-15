@@ -50,7 +50,7 @@ public class ExpensesPeriodFragment extends Fragment {
     //RecyclerView
     RecyclerView expensesPeriodRecyclerView;
     RecyclerView.LayoutManager expensesLayoutManager;
-    //ExpensesPeriodAdapter expensesPeriodAdapter;
+    ExpensesPeriodAdapter expensesPeriodAdapter;
     List<Operation>       operations;
     //RecyclerView
 
@@ -82,13 +82,16 @@ public class ExpensesPeriodFragment extends Fragment {
 
         //RecyclerView
         expensesPeriodRecyclerView = (RecyclerView) view.findViewById(R.id.expensesPeriodRecyclerView);
-        Resources resources = getContext().getResources();
-        operations = new ArrayList<>();
-        //operations.add(resources.getString(R.string.dateExpenseTextView));
 
-        //expensesPeriodAdapter = new ExpensesPeriodAdapter(operations);
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+
+        //se carga listado de operaciones
+        listOperationsFrom(1, ACCOUNT_EXPENSE, month);
+
+        expensesPeriodAdapter = new ExpensesPeriodAdapter(operations);
         expensesLayoutManager = new LinearLayoutManager(getContext());
-       // expensesPeriodRecyclerView.setAdapter(expensesPeriodAdapter);
+        expensesPeriodRecyclerView.setAdapter(expensesPeriodAdapter);
         expensesPeriodRecyclerView.setLayoutManager(expensesLayoutManager);
         //RecyclerView
 
@@ -102,11 +105,6 @@ public class ExpensesPeriodFragment extends Fragment {
         tagExpenseTextView2 = (TextView) view.findViewById(R.id.tagExpenseTextView2);
         amountExpenseTextView2 = (TextView) view.findViewById(R.id.amountExpenseTextView2);*/
 
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH) + 1;
-
-        //se carga listado de operaciones
-        listOperationsFrom(1, ACCOUNT_EXPENSE, month);
 
         return view;
     }
