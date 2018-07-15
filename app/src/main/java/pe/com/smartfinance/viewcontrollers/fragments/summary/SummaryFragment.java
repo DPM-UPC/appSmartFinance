@@ -59,7 +59,7 @@ public class SummaryFragment extends Fragment {
 
     String[] summaryMonths = new String[]{"mayo", "junio", "julio"};
     int[] sale = new int[]{25, 35, 40};
-    int[] colors = new int[]{Color.BLUE, Color.RED, Color.BLUE};
+    int[] colors = new int[]{Color.BLACK, Color.RED, Color.BLUE};
 
     public SummaryFragment() {
     }
