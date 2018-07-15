@@ -134,7 +134,6 @@ public class SummaryFragment extends Fragment {
                                         .setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
                             }
 
-                            Toast.makeText(getContext(), "Meses: " + months, Toast.LENGTH_SHORT).show();
 
                             totalIngresos = operationSummaries.get(2).getTotalIncome().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
                             totalGastos = operationSummaries.get(2).getTotalExpense().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
