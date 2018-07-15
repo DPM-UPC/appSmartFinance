@@ -1,14 +1,16 @@
 package pe.com.smartfinance.viewcontrollers.fragments.incomes;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -20,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,7 +30,9 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
-import pe.com.smartfinance.utils.DateFormatter;
+import pe.com.smartfinance.viewcontrollers.adapters.IncomePeriodAdapter;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
 /**
@@ -38,18 +41,14 @@ import pe.com.smartfinance.utils.DateFormatter;
 public class IncomesPeriodFragment extends Fragment {
 
     SessionManager session;
+    //RecyclerView
+    RecyclerView incomePeriodRecyclerView;
+    GridLayoutManager incomeGridLayoutManager;
+    IncomePeriodAdapter incomePeriodAdapter;
+    //RecyclerView
     List<Operation> operations;
 
     TextView defaultTextView;
-    TextView dateIncomeTextView;
-    TextView categoryIncomeTextView;
-    TextView tagIncomeTextView;
-    TextView amountIncomeTextView;
-
-    TextView dateIncomeTextView2;
-    TextView categoryIncomeTextView2;
-    TextView tagIncomeTextView2;
-    TextView amountIncomeTextView2;
 
     private static final int ACCOUNT_INCOME = 1;
 
@@ -69,23 +68,29 @@ public class IncomesPeriodFragment extends Fragment {
 
         defaultTextView = (TextView) view.findViewById(R.id.defaultTextView);
 
-        dateIncomeTextView = (TextView) view.findViewById(R.id.dateIncomeTextView);
-        categoryIncomeTextView = (TextView) view.findViewById(R.id.categoryIncomeTextView);
-        tagIncomeTextView = (TextView) view.findViewById(R.id.tagIncomeTextView);
-        amountIncomeTextView = (TextView) view.findViewById(R.id.amountIncomeTextView);
-
-        dateIncomeTextView2 = (TextView) view.findViewById(R.id.dateIncomeTextView2);
-        categoryIncomeTextView2 = (TextView) view.findViewById(R.id.categoryIncomeTextView2);
-        tagIncomeTextView2 = (TextView) view.findViewById(R.id.tagIncomeTextView2);
-        amountIncomeTextView2 = (TextView) view.findViewById(R.id.amountIncomeTextView2);
+        //RecyclerView
+        incomePeriodRecyclerView = (RecyclerView) view.findViewById(R.id.incomesPeriodRecyclerView);
 
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
+
+        operations = new ArrayList<>();
+
+        incomePeriodAdapter = new IncomePeriodAdapter(operations);
+        incomeGridLayoutManager = new GridLayoutManager(
+                view.getContext(),
+                getSpanCount(getResources().getConfiguration()));
+        incomePeriodRecyclerView.setAdapter(incomePeriodAdapter);
+        incomePeriodRecyclerView.setLayoutManager(incomeGridLayoutManager);
 
         //se carga listado de operaciones
         listOperationsFrom(1, ACCOUNT_INCOME, month);
 
         return view;
+    }
+
+    private int getSpanCount(Configuration configuration) {
+        return configuration.orientation == ORIENTATION_PORTRAIT ? 1 : 2;
     }
 
     private void listOperationsFrom(Integer userBusinessId, Integer accountId, Integer period) {
@@ -105,30 +110,14 @@ public class IncomesPeriodFragment extends Fragment {
                         try {
                             operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {
                             });
-                            Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
                         if (operations != null){
-
-                            for (Operation operation : operations){
-                                operation.getCreationDate();
-                                operation.getTag().getCategory().getDescription();
-                                operation.getTag().getDescription();
-                                operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
-                            }
-
-                            dateIncomeTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
-                            categoryIncomeTextView.setText(operations.get(0).getTag().getCategory().getDescription().toString());
-                            tagIncomeTextView.setText(operations.get(0).getTag().getDescription().toString());
-                            amountIncomeTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-
-                            dateIncomeTextView2.setText(DateFormatter.getFormatDate(operations.get(1).getCreationDate(), "dd-M-yyyy"));
-                            categoryIncomeTextView2.setText(operations.get(1).getTag().getCategory().getDescription().toString());
-                            tagIncomeTextView2.setText(operations.get(1).getTag().getDescription().toString());
-                            amountIncomeTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-
+                            incomePeriodAdapter.setOperations(operations);
+                            incomePeriodAdapter.notifyDataSetChanged();
                         } else {
                             defaultTextView.setVisibility(TextView.VISIBLE);
                         }

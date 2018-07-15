@@ -248,6 +248,7 @@ public class SummaryFragment extends Fragment {
         barChart.setDrawGridBackground(true);
         barChart.setDrawBarShadow(true);
         barChart.setData(getBarData());
+        barChart.setDescription("Utilidades");
         barChart.animateY(3000);
         barChart.invalidate();
 
@@ -268,7 +269,7 @@ public class SummaryFragment extends Fragment {
         labels.add(summaryMonths[0]);
         labels.add(summaryMonths[1]);
         labels.add(summaryMonths[2]);
-        BarDataSet barDataSet = (BarDataSet) getData(new BarDataSet(getBarEntries(), "Utilidades"));
+        BarDataSet barDataSet = (BarDataSet) getData(new BarDataSet(getBarEntries(), "Monto total de utilidades del mes"));
         barDataSet.setBarShadowColor(Color.GRAY);
         BarData barData = new BarData(labels, barDataSet);
         //barData.setBarWidth(0.45f);

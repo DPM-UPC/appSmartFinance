@@ -92,7 +92,7 @@ public class AddExpensesActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Log.d("AddExpensesActivity", "onDateSet: dd/mm/yyyy: " + dayOfMonth + "/" + ((month + 1) < 10 ? "0" + month : "" + month) + "/" + year);
-                String date = dayOfMonth + "-" + (++month < 10 ? "0" + month : "" + month) + "-" + year;
+                String date = (++dayOfMonth < 10 ? "0" + dayOfMonth : "" + dayOfMonth) + "-" + (++month < 10 ? "0" + month : "" + month) + "-" + year;
                 setDate(date);
                 dateTextView.setText(date);
             }

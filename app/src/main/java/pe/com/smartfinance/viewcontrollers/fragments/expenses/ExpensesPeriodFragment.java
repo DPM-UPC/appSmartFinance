@@ -1,19 +1,16 @@
 package pe.com.smartfinance.viewcontrollers.fragments.expenses;
 
 
-import android.content.res.Resources;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -23,22 +20,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import pe.com.smartfinance.R;
-import pe.com.smartfinance.models.Category;
 import pe.com.smartfinance.models.OperationModels.Operation;
-import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
-import pe.com.smartfinance.utils.DateFormatter;
 import pe.com.smartfinance.viewcontrollers.adapters.ExpensesPeriodAdapter;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
 /**
@@ -49,21 +43,12 @@ public class ExpensesPeriodFragment extends Fragment {
     SessionManager session;
     //RecyclerView
     RecyclerView expensesPeriodRecyclerView;
-    RecyclerView.LayoutManager expensesLayoutManager;
+    GridLayoutManager expensesGridLayoutManager;
     ExpensesPeriodAdapter expensesPeriodAdapter;
-    List<Operation>       operations;
     //RecyclerView
+    List<Operation> operations;
 
     TextView defaultTextView;
-    TextView dateExpenseTextView;
-    TextView categoryExpenseTextView;
-    TextView tagExpenseTextView;
-    TextView amountExpenseTextView;
-
-    TextView dateExpenseTextView2;
-    TextView categoryExpenseTextView2;
-    TextView tagExpenseTextView2;
-    TextView amountExpenseTextView2;
 
     private static final int ACCOUNT_EXPENSE = 2;
 
@@ -86,27 +71,23 @@ public class ExpensesPeriodFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
 
+        operations = new ArrayList<>();
+
+        expensesPeriodAdapter = new ExpensesPeriodAdapter(operations);
+        expensesGridLayoutManager = new GridLayoutManager(
+                view.getContext(),
+                getSpanCount(getResources().getConfiguration()));
+        expensesPeriodRecyclerView.setAdapter(expensesPeriodAdapter);
+        expensesPeriodRecyclerView.setLayoutManager(expensesGridLayoutManager);
+
         //se carga listado de operaciones
         listOperationsFrom(1, ACCOUNT_EXPENSE, month);
 
-        expensesPeriodAdapter = new ExpensesPeriodAdapter(operations);
-        expensesLayoutManager = new LinearLayoutManager(getContext());
-        expensesPeriodRecyclerView.setAdapter(expensesPeriodAdapter);
-        expensesPeriodRecyclerView.setLayoutManager(expensesLayoutManager);
-        //RecyclerView
-
-     /*   dateExpenseTextView = (TextView) view.findViewById(R.id.dateExpenseTextView);
-        categoryExpenseTextView = (TextView) view.findViewById(R.id.categoryExpenseTextView);
-        tagExpenseTextView = (TextView) view.findViewById(R.id.tagExpenseTextView);
-        amountExpenseTextView = (TextView) view.findViewById(R.id.amountExpenseTextView);
-
-        dateExpenseTextView2 = (TextView) view.findViewById(R.id.dateExpenseTextView2);
-        categoryExpenseTextView2 = (TextView) view.findViewById(R.id.categoryExpenseTextView2);
-        tagExpenseTextView2 = (TextView) view.findViewById(R.id.tagExpenseTextView2);
-        amountExpenseTextView2 = (TextView) view.findViewById(R.id.amountExpenseTextView2);*/
-
-
         return view;
+    }
+
+    private int getSpanCount(Configuration configuration) {
+        return configuration.orientation == ORIENTATION_PORTRAIT ? 1 : 2;
     }
 
     private void listOperationsFrom(Integer userBusinessId, Integer accountId, Integer period) {
@@ -125,29 +106,15 @@ public class ExpensesPeriodFragment extends Fragment {
                         operations = new ArrayList<>();
                         try {
                             operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {});
-                            Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            Log.d("SmartFinance", "operations: " + operations);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
                         if (operations != null){
-
-                            for (Operation operation : operations){
-                                operation.getCreationDate();
-                                operation.getTag().getCategory().getDescription();
-                                operation.getTag().getDescription();
-                                operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
-                            }
-
-                         /*   dateExpenseTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView.setText(operations.get(0).getTag().getCategory().getDescription().toString());
-                            tagExpenseTextView.setText(operations.get(0).getTag().getDescription().toString());
-                            amountExpenseTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-
-                            dateExpenseTextView2.setText(DateFormatter.getFormatDate(operations.get(1).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView2.setText(operations.get(1).getTag().getCategory().getDescription().toString());
-                            tagExpenseTextView2.setText(operations.get(1).getTag().getDescription().toString());
-                            amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());*/
+                            expensesPeriodAdapter.setOperations(operations);
+                            expensesPeriodAdapter.notifyDataSetChanged();
 
                         } else {
                             defaultTextView.setVisibility(TextView.VISIBLE);

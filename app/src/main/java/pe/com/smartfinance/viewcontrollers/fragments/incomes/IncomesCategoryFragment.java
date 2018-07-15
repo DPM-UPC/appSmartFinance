@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -29,7 +28,6 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
-import pe.com.smartfinance.utils.DateFormatter;
 
 
 /**
@@ -104,7 +102,7 @@ public class IncomesCategoryFragment extends Fragment {
                         try {
                             operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {
                             });
-                            Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

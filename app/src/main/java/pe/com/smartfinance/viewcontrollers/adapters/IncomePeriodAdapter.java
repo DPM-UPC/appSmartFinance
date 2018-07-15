@@ -16,25 +16,25 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.utils.DateFormatter;
 
-public class ExpensesPeriodAdapter
-        extends RecyclerView.Adapter<ExpensesPeriodAdapter.ViewHolder> {
+public class IncomePeriodAdapter
+        extends RecyclerView.Adapter<IncomePeriodAdapter.ViewHolder> {
 
     private List<Operation> operations;
 
-    public ExpensesPeriodAdapter(List<Operation> operations) {
+    public IncomePeriodAdapter(List<Operation> operations) {
         this.operations = operations;
     }
 
     @NonNull
     @Override
-    public ExpensesPeriodAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IncomePeriodAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_expense, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpensesPeriodAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull IncomePeriodAdapter.ViewHolder holder, int position) {
         Operation operation = operations.get(position);
         holder.updateViewFrom(operation);
     }
@@ -49,7 +49,7 @@ public class ExpensesPeriodAdapter
         return operations;
     }
 
-    public ExpensesPeriodAdapter setOperations(List<Operation> operations) {
+    public IncomePeriodAdapter setOperations(List<Operation> operations) {
         this.operations = operations;
         return this;
     }
@@ -61,6 +61,7 @@ public class ExpensesPeriodAdapter
         private TextView amountExpenseTextView;
         private ConstraintLayout expenseLayout;
         private Operation operation;
+
         public ViewHolder(View itemView) {
             super(itemView);
             dateExpenseTextView = (TextView) itemView.findViewById(R.id.dateExpenseTextView);
