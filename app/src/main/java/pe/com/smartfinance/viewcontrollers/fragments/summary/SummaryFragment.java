@@ -45,14 +45,12 @@ public class SummaryFragment extends Fragment {
     int[] colors = new int[]{Color.BLACK, Color.RED, Color.BLUE};
 
     public SummaryFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
 
         monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
