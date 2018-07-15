@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -29,7 +28,6 @@ import pe.com.smartfinance.R;
 import pe.com.smartfinance.models.OperationModels.Operation;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
-import pe.com.smartfinance.utils.DateFormatter;
 
 
 /**
@@ -103,7 +101,7 @@ public class ExpensesCategoryFragment extends Fragment {
                         try {
                             operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {
                             });
-                            Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -111,17 +109,17 @@ public class ExpensesCategoryFragment extends Fragment {
                         if (operations != null){
 
                             for (Operation operation : operations){
-                                operation.getCategoryIdFk();
-                                operation.getTagIdFk();
+                                operation.getTag().getCategory().getDescription();
+                                operation.getTag().getDescription();
                                 operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
                             }
 
-                            categoryExpenseTextView.setText(operations.get(0).getCategoryIdFk().toString());
-                            tagExpenseTextView.setText(operations.get(0).getTagIdFk().toString());
+                            categoryExpenseTextView.setText(operations.get(0).getTag().getCategory().getDescription());
+                            tagExpenseTextView.setText(operations.get(0).getTag().getDescription());
                             amountExpenseTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
 
-                            categoryExpenseTextView2.setText(operations.get(1).getCategoryIdFk().toString());
-                            tagExpenseTextView2.setText(operations.get(1).getTagIdFk().toString());
+                            categoryExpenseTextView2.setText(operations.get(1).getTag().getCategory().getDescription());
+                            tagExpenseTextView2.setText(operations.get(1).getTag().getDescription());
                             amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
 
                         } else {

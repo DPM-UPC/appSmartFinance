@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -18,7 +17,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,12 +25,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import pe.com.smartfinance.R;
-import pe.com.smartfinance.models.Category;
 import pe.com.smartfinance.models.OperationModels.Operation;
-import pe.com.smartfinance.models.Tag;
 import pe.com.smartfinance.models.authModels.SessionManager;
 import pe.com.smartfinance.network.OperationApi;
-import pe.com.smartfinance.utils.DateFormatter;
 
 
 /**
@@ -103,7 +98,7 @@ public class ExpensesPeriodFragment extends Fragment {
                         operations = new ArrayList<>();
                         try {
                             operations = mapper.readValue(response.toString(), new TypeReference<List<Operation>>() {});
-                            Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "operations: " + operations, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -112,19 +107,19 @@ public class ExpensesPeriodFragment extends Fragment {
 
                             for (Operation operation : operations){
                                 operation.getCreationDate();
-                                operation.getCategoryIdFk();
-                                operation.getTagIdFk();
+                                operation.getTag().getCategory().getDescription();
+                                operation.getTag().getDescription();
                                 operation.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN);
                             }
 
-                            dateExpenseTextView.setText(DateFormatter.getFormatDate(operations.get(0).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView.setText(operations.get(0).getCategoryIdFk().toString());
-                            tagExpenseTextView.setText(operations.get(0).getTagIdFk().toString());
+                            dateExpenseTextView.setText(operations.get(0).getOperationDate());
+                            categoryExpenseTextView.setText(operations.get(0).getTag().getCategory().getDescription());
+                            tagExpenseTextView.setText(operations.get(0).getTag().getDescription());
                             amountExpenseTextView.setText(operations.get(0).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
 
-                            dateExpenseTextView2.setText(DateFormatter.getFormatDate(operations.get(1).getCreationDate(), "dd-M-yyyy"));
-                            categoryExpenseTextView2.setText(operations.get(1).getCategoryIdFk().toString());
-                            tagExpenseTextView2.setText(operations.get(1).getTagIdFk().toString());
+                            dateExpenseTextView2.setText(operations.get(1).getOperationDate());
+                            categoryExpenseTextView2.setText(operations.get(1).getTag().getCategory().getDescription());
+                            tagExpenseTextView2.setText(operations.get(1).getTag().getDescription());
                             amountExpenseTextView2.setText(operations.get(1).getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
 
                         } else {
